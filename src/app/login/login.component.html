@@ -1,0 +1,70 @@
+<div class="login-container">
+  <div class="login-card">
+    <div class="login-header" style="text-align: center; margin-bottom: 20px;">
+      <h2 style="margin: 0; color: #333;">Inventory Management System</h2>
+      <p style="color: #666;">Login to your account</p>
+    </div>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+      <div class="form-group" >
+        <label for="username" >Username</label>
+        <input
+          type="text"
+          formControlName="username"
+          id="username"
+          class="form-control"
+          [ngClass]="{ 'is-invalid': submitted && formControls['username'].errors }"
+          placeholder="Enter username"
+
+        />
+        <div *ngIf="submitted && formControls['username'].errors" class="invalid-feedback" >
+          <div *ngIf="formControls['username'].errors['required']">Username is required</div>
+        </div>
+      </div>
+
+      <div class="form-group" >
+        <label for="password" >Password</label>
+        <input
+          type="password"
+          formControlName="password"
+          id="password"
+          class="form-control"
+          [ngClass]="{ 'is-invalid': submitted && formControls['password'].errors }"
+          placeholder="Enter password"
+
+        />
+        <div *ngIf="submitted && formControls['password'].errors" >
+          <div *ngIf="formControls['password'].errors['required']">Password is required</div>
+        </div>
+      </div>
+
+      <div class="form-group" >
+        <button [disabled]="loading" class="btn-login">
+          <span *ngIf="loading" class="spinner" style="margin-right: 5px;">⏳</span>
+          Login
+        </button>
+      </div>
+
+      <div *ngIf="error" class="alert alert-danger mt-3" >{{error}}</div>
+
+      <div class="login-info" >
+        <p class="highlight">Default credentials: Admin</p>
+        <p>Username: admin</p>
+        <p>Password: admin123</p>
+
+        <p class="highlight">Default credentials: Supervisor</p>
+        <p>Username: </p>
+        <p>Password: </p>
+
+        <p class="highlight">Default credentials: Sales Person</p>
+        <p>Username: admin</p>
+        <p>Password: admin123</p>
+
+        <p class="highlight">For demo purposes, you can use the above credentials to log in.</p>
+      </div>
+    </form>
+  </div>
+  <div class="login-footer">
+    <p>&copy; 2025 Inventory Management System. Mantosh Sah.</p>
+    </div>
+</div>

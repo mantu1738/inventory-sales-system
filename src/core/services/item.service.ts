@@ -1,0 +1,125 @@
+import { Injectable } from '@angular/core';
+import { Observable, of, throwError } from 'rxjs';
+import { delay } from 'rxjs/operators';
+import { Item, ItemCategory } from '../models/item.model';
+import { v4 as uuidv4 } from 'uuid';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class ItemService {
+  private items: Item[] = [
+    {
+      id: '1',
+      name: 'Laptop',
+      description: 'High-performance business laptop',
+      category: ItemCategory.ELECTRONICS,
+      price: 1200,
+      stockQuantity: 15,
+      reorderLevel: 5,
+      dateAdded: new Date('2023-01-15'),
+      lastUpdated: new Date('2023-01-15')
+    },
+    {
+      id: '2',
+      name: 'Office Chair',
+      description: 'Ergonomic office chair with lumbar support',
+      category: ItemCategory.FURNITURE,
+      price: 250,
+      stockQuantity: 8,
+      reorderLevel: 3,
+      dateAdded: new Date('2023-02-10'),
+      lastUpdated: new Date('2023-02-10')
+    },
+    {
+      id: '3',
+      name: 'Wireless Mouse',
+      description: 'Bluetooth wireless mouse',
+      category: ItemCategory.ELECTRONICS,
+      price: 35,
+      stockQuantity: 25,
+      reorderLevel: 10,
+      dateAdded: new Date('2023-01-20'),
+      lastUpdated: new Date('2023-01-20')
+    },
+    {
+      id: '4',
+      name: 'Desk Lamp',
+      description: 'LED desk lamp with adjustable brightness',
+      category: ItemCategory.OFFICE_SUPPLIES,
+      price: 45,
+      stockQuantity: 12,
+      reorderLevel: 5,
+      dateAdded: new Date('2023-03-05'),
+      lastUpdated: new Date('2023-03-05')
+    },
+    {
+      id: '5',
+      name: 'Notebook Set',
+      description: 'Set of 3 premium notebooks',
+      category: ItemCategory.OFFICE_SUPPLIES,
+      price: 15,
+      stockQuantity: 30,
+      reorderLevel: 10,
+      dateAdded: new Date('2023-02-25'),
+      lastUpdated: new Date('2023-02-25')
+    }
+  ];
+
+  constructor() { }
+
+  getItems(): Observable<Item[]> {
+    return of(this.items).pipe(delay(800));
+  }
+
+  getItemById(id: string): Observable<Item | null> {
+    const item = this.items.find(i => i.id === id);
+    if (!item) {
+      return throwError(() => new Error('Item not found'));
+    }
+    return of(item).pipe(delay(500));
+  }
+
+  createItem(item: Omit<Item, 'id' | 'dateAdded' | 'lastUpdated'>): Observable<Item> {
+    const newItem: Item = {
+      ...item,
+      id: uuidv4(),
+      dateAdded: new Date(),
+      lastUpdated: new Date()
+    };
+
+    this.items.push(newItem);
+    return of(newItem).pipe(delay(800));
+  }
+
+  updateItem(id: string, item: Partial<Item>): Observable<Item> {
+    const index = this.items.findIndex(i => i.id === id);
+    if (index === -1) {
+      return throwError(() => new Error('Item not found'));
+    }
+
+    const updatedItem: Item = {
+      ...this.items[index],
+      ...item,
+      lastUpdated: new Date()
+    };
+
+    this.items[index] = updatedItem;
+    return of(updatedItem).pipe(delay(800));
+  }
+
+  deleteItem(id: string): Observable<void> {
+    const index = this.items.findIndex(i => i.id === id);
+    if (index === -1) {
+      return throwError(() => new Error('Item not found'));
+    }
+
+    this.items.splice(index, 1);
+    return of(void 0).pipe(delay(800));
+  }
+
+  getLowStockItems(): Observable<Item[]> {
+    const lowStockItems = this.items.filter(item => item.stockQuantity <= item.reorderLevel);
+    return of(lowStockItems).pipe(delay(500));
+  }
+}
