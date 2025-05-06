@@ -10,44 +10,45 @@ import { v4 as uuidv4 } from 'uuid';
 export class UserService {
   private readonly STORAGE_KEY = 'users';
 
+  users = [
+    {
+      id: uuidv4(),
+      username: 'admin',
+      password: 'admin123', // In a real app, use proper hashing
+      fullName: 'System Administrator',
+      email: 'admin@example.com',
+      roleId: 'admin-role',
+      createdAt: new Date(),
+      updatedAt: new Date()
+    },
+    {
+      id: uuidv4(),
+      username: 'supervisor',
+      password: 'supervisor123', // In a real app, use proper hashing
+      fullName : 'System Supervisor',
+      email: 'test@gmail.com',
+      roleId: 'supervisor-role',
+      createdAt: new Date(),
+      updatedAt: new Date()
+    },
+    {
+      id: uuidv4(),
+      username: 'sales',
+      password: 'sales123',
+      fullName: 'System Sales',
+      email: 'sales@gmail.com',
+      roleId: 'sales-role',
+      createdAt: new Date(),
+      updatedAt: new Date()
+    }
+  ]
+
   constructor(private storageService: StorageService) {
     // Initialize with default admin user if none exists
     this.getUsers().subscribe(users => {
+      console.log(users);
       if (users.length === 0) {
-        const adminUser: User = {
-          id: uuidv4(),
-          username: 'admin',
-          password: 'admin123', // In a real app, use proper hashing
-          fullName: 'System Administrator',
-          email: 'admin@example.com',
-          roleId: 'admin-role',
-          createdAt: new Date(),
-          updatedAt: new Date()
-        };
-        const supervisingUser: User = {
-          id: uuidv4(),
-          username: 'supervisor',
-          password: 'supervisor123', // In a real app, use proper hashing
-          fullName : 'System Supervisor',
-          email: 'test@gmail.com',
-          roleId: 'supervisor-role',
-          createdAt: new Date(),
-          updatedAt: new Date()
-        }
-
-        const salesUser: User = {
-          id: uuidv4(),
-          username: 'sales',
-          password: 'sales123',
-          fullName: 'System Sales',
-          email: 'sales@gmail.com',
-          roleId: 'sales-role',
-          createdAt: new Date(),
-          updatedAt: new Date()
-        }
-        this.createUser(adminUser).subscribe();
-        this.createUser(supervisingUser).subscribe();
-        this.createUser(salesUser).subscribe();
+       this.storageService.saveData(this.STORAGE_KEY, this.users);
       }
     });
   }

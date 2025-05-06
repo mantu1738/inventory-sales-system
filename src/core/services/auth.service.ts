@@ -5,6 +5,7 @@ import { User } from '../models/user.model';
 import { UserService } from './user.service';
 import { RoleService } from './role.service';
 import { Role } from '../models/role.model';
+import { Route } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +19,7 @@ export class AuthService {
 
   constructor(
     private userService: UserService,
-    private roleService: RoleService
+    private roleService: RoleService,
   ) {
     // Check if user is already logged in
     const storedUser = localStorage.getItem('currentUser');

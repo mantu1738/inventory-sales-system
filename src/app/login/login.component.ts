@@ -25,7 +25,7 @@ export class LoginComponent implements OnInit {
   ) {
     // Redirect to home if already logged in
     if (this.authService.currentUserValue) {
-      this.router.navigate(['/']);
+      this.router.navigate(['/dashboard']);
     }
   }
 
@@ -42,7 +42,17 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit(){
-   console.log  (this.loginForm.value);
+
+    this.authService.login(this.formControls['username'].value, this.formControls['password'].value).subscribe({
+      next: (user) => {
+        this.loading = false;
+        this.router.navigate([this.returnUrl]);
+      }
+      , error: (error) => {
+        this.loading = false;
+        this.error = error.message;
+      }
+    });
   }
 
 }

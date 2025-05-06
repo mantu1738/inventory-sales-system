@@ -5,16 +5,12 @@ import { ContainerComponent } from './container/container.component';
 
 export const routes: Routes = [
   {
-    path:'',
-    component:LoginComponent,
-  },
-  {
       path:'login',
       component:LoginComponent,
   },
   {
     path:'',
-    // canActivate:[AuthGuard],
+    canActivate:[AuthGuard],
     component:ContainerComponent,
     children:[
       {

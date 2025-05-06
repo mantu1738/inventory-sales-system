@@ -1,7 +1,8 @@
 import { Component } from "@angular/core";
-import { RouterModule } from "@angular/router";
+import { Router, RouterModule } from "@angular/router";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
+import { AuthService } from "../../core/services/auth.service";
 
 @Component({
   selector: "app-container",
@@ -12,7 +13,7 @@ import { FormsModule } from "@angular/forms";
 })
 
 export class ContainerComponent {
-  constructor() {}
+  constructor(private authService:AuthService,private route:Router) {}
   openSidebar: boolean = true;
 
   menuSidebar = [
@@ -47,8 +48,10 @@ export class ContainerComponent {
     itemEl.classList.toggle("showMenu");
   }
 
-  logout(){
-
+  logout()
+  {
+    this.authService.logout();
+    this.route.navigate(['/login']);
   }
 
 }
