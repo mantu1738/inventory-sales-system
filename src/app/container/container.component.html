@@ -1,26 +1,58 @@
-<!-- <app-header></app-header> -->
-
-<div class="app-container">
-  <div class="position-relative">
-    <app-sidebar
-      [isSidebarCollapsed]="isSidebarCollapsed"
-      (sidebarToggle)="onSidebarToggle()"
-    >
-    </app-sidebar>
-    <button
-      class="sidebar-toggle-btn"
-      [ngClass]="{ 'sidebar-collapsed': isSidebarCollapsed }"
-      (click)="onSidebarToggle()"
+<div class="sidebar" [class.sidebar-close]="!openSidebar">
+<div class="logo">
+<h1>IMS</h1>
+</div>
+<ul class="nav flex-column  p-2" *ngIf="menuSidebar">
+  <li class="nav-item mt-2" *ngFor="let navItem of menuSidebar">
+    <a
+      class="nav-link d-flex align-items-center gap-2 "
+      [routerLink]="navItem.url"
+      routerLinkActive="active"
     >
       <i
-        [class]="
-          isSidebarCollapsed ? iconClassRight : iconClassLeft
-        "
+        class="fa"
+        [ngClass]="navItem.icon"
+        aria-hidden="true"
+        title="{{ navItem.name }}"
       ></i>
-    </button>
-  </div>
+      <span *ngIf="openSidebar">{{ navItem.name }}</span>
+    </a>
+  </li>
+  <li class="nav-item mt-2">
+    <a
+      class="nav-link d-flex align-items-center gap-2 "
+      (clicl)="logout()"
+      routerLinkActive="active"
+    >
+      <i
+        class="fa"
+        [ngClass]="'fa-sign-out-alt'"
+        aria-hidden="true"
+        title="Logout"
+      ></i>
+      <span *ngIf="openSidebar">Logout</span>
+    </a>
+  </li>
+</ul>
 
-  <main class="content" [ngClass]="{ 'content-expanded': isSidebarCollapsed }">
-    <div class="content-inner">Content goes here</div>
-  </main>
 </div>
+<section class="home-section">
+  <div class="home-header">
+    <div class="hamburger-menu">
+      <input
+        type="checkbox"
+        id="checkbox-hamburger-menu"
+        [(ngModel)]="openSidebar"
+      />
+      <label class="label-hamburger-menu" for="checkbox-hamburger-menu">
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+      </label>
+    </div>
+    <div class="title">Inventory Management System</div>
+  </div>
+  <div class="home-view">
+    <router-outlet></router-outlet>
+  </div>
+</section>

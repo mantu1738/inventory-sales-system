@@ -1,24 +1,54 @@
 import { Component } from "@angular/core";
-import { SidemenuComponent } from "../sidemenu/sidemenu.component";
-import { HeaderComponent } from "../header/header.component";
-import { CollapseModule } from "ngx-bootstrap/collapse";
 import { RouterModule } from "@angular/router";
 import { CommonModule } from "@angular/common";
+import { FormsModule } from "@angular/forms";
 
 @Component({
   selector: "app-container",
   templateUrl: "./container.component.html",
-  imports:[SidemenuComponent,CollapseModule,RouterModule,CommonModule ],
+  styleUrls: ["./container.component.css"],
+  imports:[RouterModule,CommonModule,FormsModule ],
 
 })
 
 export class ContainerComponent {
   constructor() {}
-  isSidebarCollapsed = false;
-  iconClassRight = 'fas fa-arrow-right'
-  iconClassLeft = "fas fa-arrow-left";
+  openSidebar: boolean = true;
 
-  onSidebarToggle() {
-    this.isSidebarCollapsed = !this.isSidebarCollapsed;
+  menuSidebar = [
+    {
+    "icon": "fa-home",
+    "name": "Home",
+    "url": "/dashboard"
+  },
+  {
+    "icon": "fa-area-chart",
+    "name": "Items",
+    "url": "/items"
+  },
+  {
+    "icon": "fa-users",
+    "name": "Users",
+    "url": "/users"
+  },
+  {
+    "icon": "fa-briefcase",
+    "name": "Roles",
+    "url": "/roles"
+  },
+  {
+    "icon": "fa-cart-shopping",
+    "name": "Sales",
+    "url": "/sales"
   }
+  ]
+
+  showSubmenu(itemEl: HTMLElement) {
+    itemEl.classList.toggle("showMenu");
+  }
+
+  logout(){
+
+  }
+
 }
