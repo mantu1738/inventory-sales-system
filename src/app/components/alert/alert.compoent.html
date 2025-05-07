@@ -1,0 +1,10 @@
+<div
+  *ngIf="alert"
+  class="alert alert-dismissible fade show position-fixed bottom-0 start-50 translate-middle-x mb-3"
+  [ngClass]="getAlertClass()"
+  style="z-index: 1050; width: 100%; max-width: 400px;"
+  role="alert"
+>
+  {{ alert.message }}
+  <button type="button" class="btn-close" (click)="dismiss()" aria-label="Close"></button>
+</div>

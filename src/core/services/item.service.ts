@@ -1,13 +1,16 @@
 import { Injectable } from '@angular/core';
 import { Observable, of, throwError } from 'rxjs';
-import { delay } from 'rxjs/operators';
+import { delay, map } from 'rxjs/operators';
 import { Item, ItemCategory } from '../models/item.model';
 import { v4 as uuidv4 } from 'uuid';
+import { StorageService } from './storage.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ItemService {
+
+  private readonly STORAGE_KEY = 'items';
   private items: Item[] = [
     {
       id: '1',
@@ -49,7 +52,7 @@ export class ItemService {
       category: ItemCategory.OFFICE_SUPPLIES,
       price: 45,
       stockQuantity: 12,
-      reorderLevel: 5,
+      reorderLevel: 50,
       dateAdded: new Date('2023-03-05'),
       lastUpdated: new Date('2023-03-05')
     },
@@ -66,18 +69,26 @@ export class ItemService {
     }
   ];
 
-  constructor() { }
+  constructor(private storageService: StorageService) {
+
+    // Initialize with default items if none exist
+    this.getItems().subscribe(items => {
+      if (items.length === 0) {
+        this.storageService.saveData(this.STORAGE_KEY, this.items);
+      } else {
+        this.items = items;
+      }
+    });
+
+   }
 
   getItems(): Observable<Item[]> {
-    return of(this.items).pipe(delay(800));
+    // return of(this.items).pipe(delay(800));
+     return this.storageService.getData<Item>(this.STORAGE_KEY);
   }
 
   getItemById(id: string): Observable<Item | null> {
-    const item = this.items.find(i => i.id === id);
-    if (!item) {
-      return throwError(() => new Error('Item not found'));
-    }
-    return of(item).pipe(delay(500));
+     return this.storageService.getItemById<Item>(this.STORAGE_KEY, id);
   }
 
   createItem(item: Omit<Item, 'id' | 'dateAdded' | 'lastUpdated'>): Observable<Item> {
@@ -89,33 +100,47 @@ export class ItemService {
     };
 
     this.items.push(newItem);
+    this.storageService.saveData(this.STORAGE_KEY, this.items);
     return of(newItem).pipe(delay(800));
   }
 
   updateItem(id: string, item: Partial<Item>): Observable<Item> {
-    const index = this.items.findIndex(i => i.id === id);
-    if (index === -1) {
-      return throwError(() => new Error('Item not found'));
-    }
+    // const index = this.items.findIndex(i => i.id === id);
+    // if (index === -1) {
+    //   return throwError(() => new Error('Item not found'));
+    // }
 
-    const updatedItem: Item = {
-      ...this.items[index],
-      ...item,
-      lastUpdated: new Date()
-    };
+    // const updatedItem: Item = {
+    //   ...this.items[index],
+    //   ...item,
+    //   lastUpdated: new Date()
+    // };
 
-    this.items[index] = updatedItem;
-    return of(updatedItem).pipe(delay(800));
+    // this.items[index] = updatedItem;
+    // this.storageService.saveData(this.STORAGE_KEY, this.items);
+    // return of(updatedItem).pipe(delay(800));
+    return this.getItemById(id).pipe(
+          map(existingItem => {
+            if (!existingItem) {
+              throw new Error('Role not found');
+            }
+
+            const updatedItem = {
+              ...existingItem,
+              ...item,
+              updatedAt: new Date()
+            };
+
+            console.log('Updated Item', updatedItem);
+
+            this.storageService.updateItem(this.STORAGE_KEY, id, updatedItem);
+            return updatedItem;
+          })
+        );
   }
 
-  deleteItem(id: string): Observable<void> {
-    const index = this.items.findIndex(i => i.id === id);
-    if (index === -1) {
-      return throwError(() => new Error('Item not found'));
-    }
-
-    this.items.splice(index, 1);
-    return of(void 0).pipe(delay(800));
+  deleteItem(id: string): Observable<boolean> {
+    return this.storageService.deleteItem(this.STORAGE_KEY, id);
   }
 
   getLowStockItems(): Observable<Item[]> {

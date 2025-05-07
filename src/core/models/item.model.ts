@@ -18,3 +18,31 @@ export interface Item {
   dateAdded: Date;
   lastUpdated: Date;
 }
+
+export const CategoryDropDown = [
+{
+  label: 'Electronics',
+  value: ItemCategory.ELECTRONICS,
+},
+{
+  label: 'Furniture',
+  value: ItemCategory.FURNITURE,
+},
+{
+  label: 'Office Supplies',
+  value: ItemCategory.OFFICE_SUPPLIES,
+},
+{
+  label: 'Kitchen',
+  value: ItemCategory.KITCHEN,
+},
+{
+  label: 'Clothing',
+  value: ItemCategory.CLOTHING,
+},
+{
+  label: 'Other',
+  value: ItemCategory.OTHER,
+}
+]
+

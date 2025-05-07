@@ -103,8 +103,6 @@
 .home-section .home-view {
   flex-grow: 1;
   display: flex;
-  align-items: center;
-  justify-content: center;
   flex-direction: column;
   color: white;
 }
@@ -123,6 +121,10 @@
 
 .sidebar.sidebar-close {
   width: 60px;
+}
+
+.nav-link{
+  cursor: pointer;
 }
 
 .sidebar .logo-details {

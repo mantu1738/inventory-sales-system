@@ -1,0 +1,63 @@
+<app-spinner [isSpinnerLoading]="isLoading">
+<div class="table-responsive mt-2 p-4">
+  <div class="d-flex justify-content-end align-items-center  gap-2">
+    <button class="btn btn-primary" (click)="onAdd()">
+      <i class="fas fa-plus"></i> Add Item
+    </button>
+
+</div>
+  <table
+      class="table table-hover datatable dt-responsive nowrap align-middle"
+      style="border-collapse: collapse; border-spacing: 0; width: 100%">
+      <thead class="table-light">
+          <tr>
+              <th scope="col">Id</th>
+              <th scope="col">Name</th>
+              <th scope="col">Category</th>
+              <th scope="col">stockQuantity</th>
+              <th scope="col">Price</th>
+              <th scope="col">Date Added</th>
+              <th scope="col">Actions</th>
+          </tr>
+      </thead>
+
+      <tbody>
+          <tr *ngFor="let item of items"
+             >
+              <td>
+                {{item.id}}
+              </td>
+
+              <td>
+                  <a data-bs-toggle="modal" data-bs-target="#loaddebit">
+                      <h6 class="text-uppercase">
+                         {{item.name}}
+                      </h6>
+                  </a>
+              </td>
+              <td>
+                 {{item.category}}
+              </td>
+              <td>
+
+                     {{item.stockQuantity}}
+
+              </td>
+              <td>Rs.{{item.price}}</td>
+              <td>{{item.dateAdded | date: 'dd/MM/yyyy' }}</td>
+              <td class="d-flex gap-1">
+                <!-- Edit -->
+                <button class="btn btn-sm btn-warning me-1" (click)="onEdit(item)">
+                  <i class="fas fa-edit"></i>
+                </button>
+
+                <!-- Delete -->
+                <button class="btn btn-sm btn-danger" (click)="onDelete(item)">
+                  <i class="fas fa-trash-alt"></i>
+                </button>
+              </td>
+          </tr>
+      </tbody>
+  </table>
+</div>
+</app-spinner>

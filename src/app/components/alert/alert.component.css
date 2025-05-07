@@ -1,0 +1,9 @@
+.toast {
+  background: transparent;
+  border: none;
+}
+
+.toast-header {
+  background: transparent;
+  color: inherit;
+}

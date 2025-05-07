@@ -1,0 +1,125 @@
+<div *ngIf="formGroup" class="form-group mb-3" [formGroup]="formGroup">
+    <label [for]="props.idName" class="form-label">{{ props.label }}</label>
+    <ng-container [ngSwitch]="props.inputtype">
+        <div *ngSwitchCase="'CHECKBOX'">
+            <label
+                *ngFor="let option of props?.options"
+                class="form-check-label"
+                for="remember-check">
+                <input
+                    [value]="option.value"
+                    [formControlName]="props.paramOrder"
+                    class="form-check-input"
+                    type="checkbox"
+                    [id]="props.idName" />
+                {{ option.label }}
+            </label>
+        </div>
+        <ng-container *ngSwitchCase="'DROPDOWN'">
+            <ng-select
+                *ngIf="!isReadonly"
+                [id]="props.idName"
+                placeholder="{{ props.placeHolder }}"
+                [formControlName]="props.paramOrder">
+                <ng-option value="">
+                    {{ props.placeHolder }}
+                </ng-option>
+                <ng-option
+                    *ngFor="let option of props?.options"
+                    [value]="option.value">
+                    {{ option.label }}
+                    <ng-container
+                        *ngIf="
+                            props?.idName === 'amount' &&
+                            props?.paramOrder === 'Amount' &&
+                            props?.label === 'Package'
+                        ">
+                        <span style="right: 5em; position: absolute"
+                            >Rs. {{ option.value }}</span
+                        >
+                    </ng-container>
+                </ng-option>
+            </ng-select>
+
+            <input
+                *ngIf="isReadonly"
+                class="form-control"
+                [id]="props.idName"
+                type="text"
+                [formControlName]="props.paramOrder"
+                [name]="props.placeHolder || props.label"
+                [placeholder]="props.placeHolder"
+                [readOnly]="isReadonly" />
+        </ng-container>
+
+        <ng-container *ngSwitchCase="'DATE'">
+          <div class="input-group">
+              <input
+                  class="form-control"
+                  type="text"
+                  bsDatepicker
+                  [bsConfig]="datePickerConfig"
+                  [maxDate]="props.maxDate"
+                  [id]="props.idName"
+                  [placeholder]="props.placeHolder"
+                  [formControlName]="props.paramOrder" />
+          </div>
+      </ng-container>
+
+        <ng-container *ngSwitchCase="'MOBILE'">
+            <div class="input-group">
+                <input
+                    type="text"
+                    class="form-control"
+                    [id]="props.idName"
+                    [formControlName]="props.paramOrder"
+                    maxlength="10"
+                    [placeholder]="props.placeHolder" />
+
+                <button
+                    type="button"
+                    class="input-group-text"
+                    appPatchMobileNumber>
+                    <i
+                        class="bx bx-mobile-alt clickable"
+                        id="mobile-icon"
+                        tabindex="0"></i>
+                </button>
+            </div>
+        </ng-container>
+        <input
+            class="form-control"
+            [id]="props.idName"
+            type="text"
+            *ngSwitchDefault
+            [formControlName]="props.paramOrder"
+            [name]="props.placeHolder || props.label"
+            [placeholder]="props.placeHolder"
+            [ngClass]="{ 'disabled-input': isReadonly }"
+            [readOnly]="isReadonly" />
+    </ng-container>
+
+    <!-- Antivirus -->
+
+    <div
+        class="text-danger"
+        *ngIf="
+            customFormControl?.invalid &&
+            (customFormControl?.touched || customFormControl?.dirty)
+        ">
+        <small *ngIf="customFormControl?.hasError('required')">
+            {{ props.label }} is required.&nbsp;
+        </small>
+        <small *ngIf="customFormControl?.hasError('maxlength')">
+            {{ props.label }} cannot exceed
+            {{ maxlengthValue }} characters.&nbsp;
+        </small>
+        <small *ngIf="customFormControl?.hasError('minlength')">
+            {{ props.label }} must have at least
+            {{ minlengthValue }} characters.&nbsp;
+        </small>
+        <small *ngIf="customFormControl?.hasError('pattern')">
+            {{ props.label }} is invalid.&nbsp;
+        </small>
+    </div>
+</div>

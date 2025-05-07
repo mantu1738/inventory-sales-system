@@ -3,11 +3,12 @@ import { Component, OnInit } from "@angular/core";
 import {  FormBuilder, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { AuthService } from "../../core/services/auth.service";
+import { SpinnerLoaderComponent } from "../components/spinner-loader/spinner-loader.component";
 
 @Component({
   selector: "app-login",
   templateUrl: "./login.component.html",
-  imports: [ReactiveFormsModule,CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, SpinnerLoaderComponent],
   styleUrls: ["./login.component.css"],
 })
 
@@ -42,9 +43,9 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit(){
-
+    this.loading = true;
     this.authService.login(this.formControls['username'].value, this.formControls['password'].value).subscribe({
-      next: (user) => {
+      next: () => {
         this.loading = false;
         this.router.navigate([this.returnUrl]);
       }

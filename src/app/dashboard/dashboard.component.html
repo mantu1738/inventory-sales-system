@@ -1,1 +1,54 @@
-<h1>Dashboard</h1>
+<div class="dashboard-container">
+  <div class="dashboard-header">
+    <h1>Dashboard</h1>
+    <p *ngIf="currentUser">Welcome back, {{ currentUser.fullName }}</p>
+  </div>
+<app-spinner [isSpinnerLoading]="isSpinnerLoading">
+  <div class="dashboard-stats">
+    <div class="stat-card">
+      <div class="stat-icon sales-icon">
+        <i class="fas fa-boxes"></i>
+      </div>
+      <div class="stat-content">
+        <h3>Total Item Sold</h3>
+        <p class="stat-value">{{ totalItemSold }}</p>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon inventory-icon">
+        <i class="fas fa-boxes"></i>
+      </div>
+      <div class="stat-content">
+        <h3>Item Sold Today</h3>
+        <p class="stat-value">{{ totalItems }}</p>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon alert-icon">
+        <i class="fas fa-fire"></i>
+      </div>
+      <div class="stat-content" *ngIf="mostPopularItem.length>=1">
+        <h3>Most Popular Item</h3>
+        <p class="h4 fw-bold text-dark">{{mostPopularItem[0].name}}</p>
+          <p class="text-muted">Reorder Level: {{mostPopularItem[0].reorderLevel}}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="dashboard-content">
+    <div class="dashboard-section">
+      <div class="dashboard-row">
+        <div class="dashboard-col">
+          <app-inventory-summary [inventoryItems]="inventoryItems"></app-inventory-summary>
+        </div>
+        <div class="dashboard-col">
+          <app-sales-summary [salesData]="salesData"></app-sales-summary>>
+        </div>
+      </div>
+    </div>
+  </div>
+</app-spinner>
+</div>
+
