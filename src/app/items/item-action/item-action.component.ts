@@ -45,8 +45,6 @@ export class ItemActionComponent {
         itemPrice: this.item.price,
         itemStockQuantity: this.item.stockQuantity,
         itemReorderLevel: this.item.reorderLevel,
-        itemDateAdded: new Date(this.item.dateAdded),
-        itemLastUpdated: new Date(this.item.lastUpdated),
       });
 
       console.log(this.itemForm.value);
@@ -67,9 +65,6 @@ export class ItemActionComponent {
         price:  this.itemForm.get('itemPrice')?.value,
         stockQuantity:   this.itemForm.get('itemStockQuantity')?.value,
         reorderLevel: this.itemForm.get('itemReorderLevel')?.value,
-        dateAdded:  this.itemForm.get('itemDateAdded')?.value,
-        lastUpdated:  this.itemForm.get('itemLastUpdated')?.value,
-
     }
 
     console.log (payload);

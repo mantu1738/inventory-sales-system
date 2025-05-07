@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
 import { FormFieldProperties } from '../../app/components/form-builder/form-builder.component';
-import { CategoryDropDown, ItemCategory } from '../models/item.model';
-
+import { CategoryDropDown } from '../models/item.model';
+import { v4 as uuidv4 } from 'uuid';
 
 @Injectable({
   providedIn: 'root',
 })
+
+
 
 export class AddEditItemForm{
 
@@ -22,6 +24,7 @@ export class AddEditItemForm{
           placeHolder: 'Enter Item Id',
           paramOrder: 'itemId',
           visible: true,
+          paramValue:uuidv4(),
       },
       {
           idName: 'name',
@@ -85,30 +88,30 @@ export class AddEditItemForm{
           visible: true,
       },
 
-      {
-        idName: 'dateAdded',
-        label: 'Created Date',
-        maxLength: null,
-        minLength: null,
-        regex:'', // Fix: Use the string representation of the regular expression pattern
-        inputtype: 'DATE',
-        required: 'Y',
-        placeHolder: 'Enter Created Date',
-        paramOrder: 'itemDateAdded',
-        visible: true,
-    },
-    {
-      idName: 'lastUpdated',
-      label: 'Updated Date',
-      maxLength: null,
-      minLength: null,
-      regex:'', // Fix: Use the string representation of the regular expression pattern
-      inputtype: 'DATE',
-      required: 'Y',
-      placeHolder: 'Enter Update Date',
-      paramOrder: 'itemLastUpdated',
-      visible: true,
-  },
+  //     {
+  //       idName: 'dateAdded',
+  //       label: 'Created Date',
+  //       maxLength: null,
+  //       minLength: null,
+  //       regex:'', // Fix: Use the string representation of the regular expression pattern
+  //       inputtype: 'DATE',
+  //       required: 'Y',
+  //       placeHolder: 'Enter Created Date',
+  //       paramOrder: 'itemDateAdded',
+  //       visible: true,
+  //   },
+  //   {
+  //     idName: 'lastUpdated',
+  //     label: 'Updated Date',
+  //     maxLength: null,
+  //     minLength: null,
+  //     regex:'', // Fix: Use the string representation of the regular expression pattern
+  //     inputtype: 'DATE',
+  //     required: 'Y',
+  //     placeHolder: 'Enter Update Date',
+  //     paramOrder: 'itemLastUpdated',
+  //     visible: true,
+  // },
   {
     idName: 'reorderLevel',
     label: 'Reorder Level',

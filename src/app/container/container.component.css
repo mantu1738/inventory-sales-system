@@ -88,7 +88,7 @@
 
 
 .home-section .home-header {
-  height: 80px;
+  padding: 20px 10px;
   display: flex;
   align-items: center;
   background:#dac0c0 ;

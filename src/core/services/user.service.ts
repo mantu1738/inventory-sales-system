@@ -3,6 +3,7 @@ import { Observable, map } from 'rxjs';
 import { User } from '../models/user.model';
 import { StorageService } from './storage.service';
 import { v4 as uuidv4 } from 'uuid';
+import { RoleType } from '../models/role.model';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,7 @@ export class UserService {
       password: 'admin123', // In a real app, use proper hashing
       fullName: 'System Administrator',
       email: 'admin@example.com',
-      roleId: 'admin-role',
+      roleId: RoleType.ADMIN,
       createdAt: new Date(),
       updatedAt: new Date()
     },
@@ -27,7 +28,7 @@ export class UserService {
       password: 'supervisor123', // In a real app, use proper hashing
       fullName : 'System Supervisor',
       email: 'test@gmail.com',
-      roleId: 'supervisor-role',
+      roleId: RoleType.SUPERVISOR,
       createdAt: new Date(),
       updatedAt: new Date()
     },
@@ -37,7 +38,7 @@ export class UserService {
       password: 'sales123',
       fullName: 'System Sales',
       email: 'sales@gmail.com',
-      roleId: 'sales-role',
+      roleId: RoleType.SALESPERSON,
       createdAt: new Date(),
       updatedAt: new Date()
     }
@@ -97,6 +98,28 @@ export class UserService {
   }
 
   deleteUser(id: string): Observable<boolean> {
-    return this.storageService.deleteItem(this.STORAGE_KEY, id);
+    return this.getUsers().pipe(
+      map(users => {
+        const userToDelete = users.find(u => u.id === id);
+
+        if (!userToDelete) {
+          throw new Error('User not found');
+        }
+
+        // Check if the user is an admin
+        if (userToDelete.roleId === RoleType.ADMIN) {
+          const adminCount = users.filter(u => u.roleId === RoleType.ADMIN).length;
+          if (adminCount <= 1) {
+            console.log('Cannot delete the last admin user.');
+            return false;
+          }
+        }
+
+        const updatedUsers = users.filter(user => user.id !== id);
+        this.storageService.saveData(this.STORAGE_KEY, updatedUsers);
+        return true;
+      })
+    );
   }
+
 }

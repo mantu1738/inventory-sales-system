@@ -15,8 +15,8 @@ export interface Item {
   price: number;
   stockQuantity: number;
   reorderLevel: number;
-  dateAdded: Date;
-  lastUpdated: Date;
+  dateAdded?: Date;
+  lastUpdated?: Date;
 }
 
 export const CategoryDropDown = [

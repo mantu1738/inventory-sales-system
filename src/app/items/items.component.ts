@@ -38,10 +38,6 @@ export class ItemsComponent {
     });
   }
 
-  onView(item: Item) {
-    console.log("View item:", item);
-
-  }
   onEdit(item: Item) {
     this.modalService.show(ItemActionComponent, {
       class: 'modal-dialog modal-xl modal-dialog-centered',

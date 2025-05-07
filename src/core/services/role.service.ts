@@ -16,7 +16,7 @@ export class RoleService {
       if (roles.length === 0) {
         const defaultRoles: Role[] = [
           {
-            id: 'admin-role',
+            id: uuidv4(),
             name: 'Administrator',
             type: RoleType.ADMIN,
             permissions: ['user.manage', 'role.manage', 'item.manage', 'sales.manage', 'dashboard.view'],
@@ -24,7 +24,7 @@ export class RoleService {
             updatedAt: new Date()
           },
           {
-            id: 'supervisor-role',
+            id: uuidv4(),
             name: 'Supervisor',
             type: RoleType.SUPERVISOR,
             permissions: ['item.manage', 'dashboard.view'],
@@ -32,7 +32,7 @@ export class RoleService {
             updatedAt: new Date()
           },
           {
-            id: 'sales-role',
+            id: uuidv4(),
             name: 'Sales Person',
             type: RoleType.SALESPERSON,
             permissions: ['sales.manage'],

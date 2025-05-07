@@ -12,3 +12,18 @@ export interface Role {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export const RoleDropDown = [
+  {
+    label: 'Admin',
+    value: RoleType.ADMIN,
+  },
+  {
+    label: 'Supervisor',
+    value: RoleType.SUPERVISOR,
+  },
+  {
+    label: 'Sales Person',
+    value: RoleType.SALESPERSON,
+  }
+];
