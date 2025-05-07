@@ -2,13 +2,13 @@ import { Component } from "@angular/core";
 import { User } from "../../core/models/user.model";
 import { AuthService } from "../../core/services/auth.service";
 import { CommonModule } from "@angular/common";
-import { SaleService } from "../../core/services/sales.service";
 import { ItemService } from "../../core/services/item.service";
 import { Item } from "../../core/models/item.model";
 import { SpinnerLoaderComponent } from "../components/spinner-loader/spinner-loader.component";
 import { InventorySummaryComponent } from "../components/inventory-summary/inventory-summary.component";
 import { Sale } from "../../core/models/sale.model";
 import { SalesSummaryComponent } from "../components/sales-summary/sales-summary.component";
+import { SalesService } from "../../core/services/sales.service";
 
 @Component({
   selector: "app-dashboard",
@@ -30,7 +30,7 @@ export class DashboardComponent {
   salesData:Sale[]=[];
   constructor(
     private authService: AuthService,
-    private salesService:SaleService,
+    private salesService:SalesService,
     private itemService:ItemService
   ) { }
 
@@ -45,11 +45,7 @@ export class DashboardComponent {
 
     this.salesService.getSales().subscribe(sales => {
       this.totalItemSold = sales.length;
-      this.totalItems = sales
-      .filter(invoice => new Date(invoice.createdAt).toISOString().startsWith(this.todayStr))
-      .flatMap(invoice => invoice.items)
-      .length;
-
+      this.totalItems = sales.reduce((total, sale) => total + sale.quantity, 0);
       this.salesData = sales;
 
         console.log(this.salesData)

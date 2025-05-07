@@ -1,150 +1,126 @@
 import { Injectable } from '@angular/core';
-import { Observable, of, throwError, map } from 'rxjs';
-import { delay } from 'rxjs/operators';
-import { Sale, SaleItem } from '../models/sale.model';
-import { StorageService } from './storage.service';
-import { ItemService } from './item.service';
+import { Observable, of, throwError } from 'rxjs';
+import { switchMap, map } from 'rxjs/operators';
 import { v4 as uuidv4 } from 'uuid';
 
-@Injectable({
-  providedIn: 'root'
-})
-export class SaleService {
-  private readonly STORAGE_KEY = 'sales';
+import { StorageService } from './storage.service';
+import { Item, ItemCategory } from '../models/item.model';
+import { Sale } from '../models/sale.model';
 
-  constructor(
-    private storageService: StorageService,
-    private itemService: ItemService
-  ) {
-    // Initialize with sample sales if none exist
-    this.getSales().subscribe(sales => {
-      if (sales.length === 0) {
-        const sampleSales = [
-          {
-            id: uuidv4(),
-            invoiceNumber: 'INV-2024-0001',
-            customerName: 'John Doe',
-            items: [
-              {
-                itemId: '1',
-                name: 'Test Item 1',
-                quantity: 2,
-                price: 10.99,
-                total: 21.98
-              }
-            ],
-            subtotal: 21.98,
-            total: 21.98,
-            createdAt: new Date(),
-            updatedAt: new Date()
-          },
-          {
-            id: uuidv4(),
-            invoiceNumber: 'INV-2024-0002',
-            customerName: 'Jane Smith',
-            items: [
-              {
-                itemId: '2',
-                name: 'Test Item 2',
-                quantity: 1,
-                price: 25.50,
-                total: 25.50
-              },
-              {
-                itemId: '3',
-                name: 'Test Item 3',
-                quantity: 3,
-                price: 5.99,
-                total: 17.97
-              }
-            ],
-            subtotal: 43.47,
-            total: 43.47,
-            createdAt: '2025-05-04T03:55:57.116Z',
-            updatedAt: new Date()
-          }
-        ];
-        this.storageService.saveData(this.STORAGE_KEY, sampleSales);
+@Injectable({
+  providedIn: 'root',
+})
+export class SalesService {
+  private readonly ITEM_KEY = 'items';
+  private readonly SALES_KEY = 'sales';
+
+  constructor(private storageService: StorageService) {
+
+    // Initialize sales data if not already present
+    this.storageService.getData<Sale>(this.SALES_KEY).subscribe((sales) => {
+      if (!sales || sales.length === 0) {
+      const initialSales: Sale[] = [
+        {
+        id: uuidv4(),
+        itemId: '1',
+        itemName: 'Sample Item 1',
+        category: ItemCategory.ELECTRONICS,
+        quantity: 2,
+        unitPrice: 50,
+        totalPrice: 100,
+        date: new Date(),
+        },
+        {
+        id: uuidv4(),
+        itemId: '2',
+        itemName: 'Sample Item 2',
+        category: ItemCategory.CLOTHING,
+        quantity: 1,
+        unitPrice: 150,
+        totalPrice: 150,
+        date: new Date(),
+        },
+      ];
+      this.storageService.saveData<Sale>(this.SALES_KEY, initialSales).subscribe();
       }
     });
+
+  }
+
+  sellItem(id: string, quantity: number): Observable<Item> {
+    return this.storageService.getItemById<Item>(this.ITEM_KEY, id).pipe(
+      switchMap((item) => {
+        if (!item) {
+          return throwError(() => new Error('Item not found.'));
+        }
+        if (item.stockQuantity < quantity) {
+          return throwError(() => new Error('Not enough stock.'));
+        }
+
+        // Update stock
+        const updatedItem: Item = {
+          ...item,
+          stockQuantity: item.stockQuantity - quantity,
+          lastUpdated: new Date(),
+        };
+
+        // Create sale record
+        const sale: Sale = {
+          id: uuidv4(),
+          itemId: item.id,
+          itemName: item.name,
+          category: item.category,
+          quantity,
+          unitPrice: item.price,
+          totalPrice: item.price * quantity,
+          date: new Date(),
+        };
+
+        return this.storageService.updateItem<Item>(this.ITEM_KEY, id, updatedItem).pipe(
+          switchMap(() =>
+            this.storageService.getData<Sale>(this.SALES_KEY).pipe(
+              switchMap((sales) =>
+                this.storageService.saveData<Sale>(this.SALES_KEY, [...sales, sale])
+              ),
+              map(() => updatedItem)
+            )
+          )
+        );
+      })
+    );
+  }
+
+  restockItem(id: string, quantity: number): Observable<Item> {
+    return this.storageService.getItemById<Item>(this.ITEM_KEY, id).pipe(
+      switchMap((item) => {
+        if (!item) {
+          return throwError(() => new Error('Item not found.'));
+        }
+        const updatedItem: Item = {
+          ...item,
+          stockQuantity: item.stockQuantity + quantity,
+          lastUpdated: new Date(),
+        };
+        return this.storageService.updateItem<Item>(this.ITEM_KEY, id, updatedItem);
+      })
+    );
+  }
+
+  searchItem(term: string): Observable<Item[]> {
+    const lowerTerm = term.toLowerCase();
+    return this.storageService.getData<Item>(this.ITEM_KEY).pipe(
+      map((items) =>
+        items.filter(
+          (item) =>
+            item.name.toLowerCase().includes(lowerTerm) ||
+            item.description.toLowerCase().includes(lowerTerm) ||
+            item.category.toLowerCase().includes(lowerTerm)
+        )
+      )
+    );
   }
 
   getSales(): Observable<Sale[]> {
-    return this.storageService.getData<Sale>(this.STORAGE_KEY);
-  }
-
-  getSaleById(id: string): Observable<Sale | null> {
-    return this.storageService.getItemById<Sale>(this.STORAGE_KEY, id);
-  }
-
-  createSale(sale: Omit<Sale, 'id' | 'createdAt' | 'updatedAt'>): Observable<Sale> {
-    return this.getSales().pipe(
-      map(sales => {
-        // Generate invoice number (simple implementation)
-        const invoiceNumber = `INV-${new Date().getFullYear()}-${String(sales.length + 1).padStart(4, '0')}`;
-
-        const newSale: Sale = {
-          ...sale,
-          id: uuidv4(),
-          invoiceNumber,
-          createdAt: new Date(),
-          updatedAt: new Date()
-        };
-
-        sales.push(newSale);
-        this.storageService.saveData(this.STORAGE_KEY, sales);
-        return newSale;
-      })
-    );
-  }
-
-  updateSale(id: string, sale: Partial<Sale>): Observable<Sale> {
-    return this.getSaleById(id).pipe(
-      map(existingSale => {
-        if (!existingSale) {
-          throw new Error('Sale not found');
-        }
-
-        const updatedSale = {
-          ...existingSale,
-          ...sale,
-          updatedAt: new Date()
-        };
-
-        this.storageService.updateItem(this.STORAGE_KEY, id, updatedSale);
-        return updatedSale;
-      })
-    );
-  }
-
-  deleteSale(id: string): Observable<boolean> {
-    return this.storageService.deleteItem(this.STORAGE_KEY, id);
-  }
-
-  // Helper method to calculate totals
-  calculateTotals(items: SaleItem[]): { subtotal: number, total: number } {
-    const subtotal = items.reduce((sum, item) => sum + item.total, 0);
-    // For simplicity, we're just returning the subtotal as total
-    // In a real app, you might add tax calculations here
-    return { subtotal, total: subtotal };
-  }
-
-  // Get sales statistics for dashboard
-  getSalesStats(): Observable<{
-    totalSales: number,
-    totalRevenue: number,
-    recentSales: Sale[]
-  }> {
-    return this.getSales().pipe(
-      map(sales => {
-        const totalSales = sales.length;
-        const totalRevenue = sales.reduce((sum, sale) => sum + sale.total, 0);
-        const recentSales = [...sales]
-          .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
-          .slice(0, 5);
-
-        return { totalSales, totalRevenue, recentSales };
-      })
-    );
+    return this.storageService.getData<Sale>(this.SALES_KEY);
   }
 }

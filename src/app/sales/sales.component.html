@@ -1,1 +1,50 @@
-<h1 style="color: red;">Sales</h1>
+<div class="container py-4">
+  <div class="row mb-3">
+    <div class="col-md-6">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Search items..."
+        [(ngModel)]="searchTerm"
+        (input)="loadItems()"
+      />
+    </div>
+    <div class="col-md-6 text-md-end mt-2 mt-md-0">
+      <a [routerLink]="['/sales-history']" class="btn btn-outline-primary">View Sales History</a>
+    </div>
+  </div>
+<app-spinner [isSpinnerLoading]="isLoading">
+  <div class="row">
+    <div *ngFor="let item of items" class="col-md-6 col-lg-4 mb-4">
+      <div class="card h-100">
+        <div class="card-body">
+          <h5 class="card-title">{{ item.name }}</h5>
+          <p class="card-text">{{ item.description }}</p>
+          <p class="card-text">
+            <strong>Category:</strong> {{ item.category }}<br />
+            <strong>Price:</strong> Rs.{{ item.price }}<br />
+            <strong>Stock:</strong> {{ item.stockQuantity }}
+          </p>
+          <div class="d-flex flex-column gap-2">
+            <div class="input-group">
+              <input type="number" class="form-control" [(ngModel)]="sellAmount[item.id]" placeholder="Sell qty" />
+              <button class="btn btn-success" (click)="sell(item.id)" [disabled]="isSelling[item.id]">
+                <span *ngIf="isSelling[item.id]" class="spinner-border spinner-border-sm me-1" role="status"></span>
+                {{ isSelling[item.id] ? 'Selling...' : 'Sell' }}
+              </button>
+            </div>
+
+            <div class="input-group">
+              <input type="number" class="form-control" [(ngModel)]="restockAmount[item.id]" placeholder="Restock qty" />
+              <button class="btn btn-warning" (click)="restock(item.id)" [disabled]="isRestocking[item.id]">
+                <span *ngIf="isRestocking[item.id]" class="spinner-border spinner-border-sm me-1" role="status"></span>
+                {{ isRestocking[item.id] ? 'Restocking...' : 'Restock' }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</app-spinner>
+</div>
