@@ -46,9 +46,7 @@ export class DashboardComponent {
     this.salesService.getSales().subscribe(sales => {
       this.totalItemSold = sales.length;
       this.totalItems = sales.reduce((total, sale) => total + sale.quantity, 0);
-      this.salesData = sales;
-
-        console.log(this.salesData)
+      this.salesData = sales.reverse();
 
       this.itemService.getItems().subscribe(items => {
         const maxReorderLevel = Math.max(

@@ -20,7 +20,7 @@ export class UsersComponent {
 
   constructor(
     private userService:UserService,
-    private modalService:BsModalService
+    private modalService:BsModalService,
   ) {}
   ngOnInit() {
     this.getUsers();

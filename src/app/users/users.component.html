@@ -21,8 +21,8 @@
           <p class="card-text">Created At: {{ user.createdAt | date: 'short' }}</p>
           <p class="card-text">Updated At: {{ user.updatedAt | date: 'short' }}</p>
           <div class="mt-auto d-flex justify-content-between">
-            <button class="btn btn-sm btn-outline-primary" (click)="onEditUser(user)">Edit</button>
-            <button class="btn btn-sm btn-outline-danger" (click)="onDeleteUser(user.id)">Delete</button>
+            <button class="btn btn-sm btn-outline-primary" *ngIf="user.roleId!== 'super-admin'" (click)="onEditUser(user)">Edit</button>
+            <button class="btn btn-sm btn-outline-danger" *ngIf="user.roleId!== 'super-admin'" (click)="onDeleteUser(user.id)">Delete</button>
           </div>
         </div>
       </div>

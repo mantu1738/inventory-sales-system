@@ -14,6 +14,16 @@ export class UserService {
   users = [
     {
       id: uuidv4(),
+      username: 'super-admin',
+      password: 'admin123',
+      fullName: 'System Administrator',
+      email: 'admin@example.com',
+      roleId: RoleType.SUPER_ADMIN,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    },
+    {
+      id: uuidv4(),
       username: 'admin',
       password: 'admin123', // In a real app, use proper hashing
       fullName: 'System Administrator',
@@ -114,7 +124,6 @@ export class UserService {
             return false;
           }
         }
-
         const updatedUsers = users.filter(user => user.id !== id);
         this.storageService.saveData(this.STORAGE_KEY, updatedUsers);
         return true;

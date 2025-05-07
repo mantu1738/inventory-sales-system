@@ -21,7 +21,6 @@ export class SalesHistoryComponent implements OnInit {
     this.salesService.getSales().subscribe((data) => {
       this.sales = data.reverse();
       this.isLoading = false;
-       // Show latest first
     });
   }
 }

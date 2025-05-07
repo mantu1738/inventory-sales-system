@@ -1,0 +1,40 @@
+<div class="container mt-4">
+  <h4>{{ isEditMode ? 'Edit' : 'Create' }} Role</h4>
+  <form (ngSubmit)="onSubmit()" #roleForm="ngForm">
+    <div class="mb-3">
+      <label class="form-label">Role Name</label>
+      <input type="text" class="form-control" [(ngModel)]="role.name" name="name" required />
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Role Type</label>
+      <select class="form-select" [(ngModel)]="role.type" name="type" required>
+        <option *ngFor="let r of roleTypes" [value]="r.value">{{ r.label }}</option>
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Permissions</label>
+      <div class="row">
+        <div class="col-md-6" *ngFor="let perm of availablePermissions">
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              [id]="perm"
+              [checked]="selectedPermissions.has(perm)"
+              (change)="togglePermission(perm)"
+            />
+            <label class="form-check-label" [for]="perm">
+              {{ perm }}
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <button type="submit" class="btn btn-success">{{ isEditMode ? 'Update' : 'Create' }}</button>
+    <button type="button" class="btn btn-secondary ms-2" routerLink="/roles">Cancel</button>
+  </form>
+</div>

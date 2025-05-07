@@ -17,6 +17,14 @@ export class RoleService {
         const defaultRoles: Role[] = [
           {
             id: uuidv4(),
+            name: 'Super Admin',
+            type: RoleType.SUPER_ADMIN,
+            permissions: ['user.manage', 'role.manage', 'item.manage', 'sales.manage', 'dashboard.view'],
+            createdAt: new Date(),
+            updatedAt: new Date()
+          },
+          {
+            id: uuidv4(),
             name: 'Administrator',
             type: RoleType.ADMIN,
             permissions: ['user.manage', 'role.manage', 'item.manage', 'sales.manage', 'dashboard.view'],
@@ -58,7 +66,7 @@ export class RoleService {
       map(roles => {
         const newRole = {
           ...role,
-          id: role.id || uuidv4(),
+          id:uuidv4(),
           createdAt: new Date(),
           updatedAt: new Date()
         };
