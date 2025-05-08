@@ -4,6 +4,7 @@ import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { AuthService } from "../../core/services/auth.service";
 import { Observable, of } from "rxjs";
+import { AlertService } from "../components/alert/alert.service";
 
 @Component({
   selector: "app-container",
@@ -49,7 +50,7 @@ export class ContainerComponent {
   }
   ]
 
-  constructor(private authService:AuthService,private route:Router) {}
+  constructor(private authService:AuthService,private route:Router,private alertService:AlertService) {}
 
   showSubmenu(itemEl: HTMLElement) {
     itemEl.classList.toggle("showMenu");
@@ -59,6 +60,7 @@ export class ContainerComponent {
   {
     this.authService.logout();
     this.route.navigate(['/login']);
+    this.alertService.showSuccess("Logout Successfully");
   }
 
   hasPermission(permission: string): Observable<boolean> {
