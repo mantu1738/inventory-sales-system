@@ -15,8 +15,7 @@ export class SalesService {
   private readonly SALES_KEY = 'sales';
 
   constructor(private storageService: StorageService) {
-
-    // Initialize sales data if not already present
+    // Sales Data for testing purposes
     this.storageService.getData<Sale>(this.SALES_KEY).subscribe((sales) => {
       if (!sales || sales.length === 0) {
       const initialSales: Sale[] = [
@@ -57,14 +56,12 @@ export class SalesService {
           return throwError(() => new Error('Not enough stock.'));
         }
 
-        // Update stock
         const updatedItem: Item = {
           ...item,
           stockQuantity: item.stockQuantity - quantity,
           lastUpdated: new Date(),
         };
 
-        // Create sale record
         const sale: Sale = {
           id: uuidv4(),
           itemId: item.id,

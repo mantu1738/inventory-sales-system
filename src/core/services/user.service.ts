@@ -12,6 +12,7 @@ import { AlertService } from '../../app/components/alert/alert.service';
 export class UserService {
   private readonly STORAGE_KEY = 'users';
 
+  // Sample users for testing purposes
   users = [
     {
       id: uuidv4(),
@@ -26,7 +27,7 @@ export class UserService {
     {
       id: uuidv4(),
       username: 'admin',
-      password: 'admin123', // In a real app, use proper hashing
+      password: 'admin123',
       fullName: 'System Administrator',
       email: 'admin@example.com',
       roleId: RoleType.ADMIN,
@@ -36,7 +37,7 @@ export class UserService {
     {
       id: uuidv4(),
       username: 'supervisor',
-      password: 'supervisor123', // In a real app, use proper hashing
+      password: 'supervisor123',
       fullName : 'System Supervisor',
       email: 'test@gmail.com',
       roleId: RoleType.SUPERVISOR,
@@ -56,7 +57,6 @@ export class UserService {
   ]
 
   constructor(private storageService: StorageService,private alertService:AlertService) {
-    // Initialize with default admin user if none exists
     this.getUsers().subscribe(users => {
       if (users.length === 0) {
        this.storageService.saveData(this.STORAGE_KEY, this.users);

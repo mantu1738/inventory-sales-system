@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 import { User } from '../models/user.model';
 import { UserService } from './user.service';
 import { RoleService } from './role.service';
@@ -20,7 +20,6 @@ export class AuthService {
     private userService: UserService,
     private roleService: RoleService,
   ) {
-    // Check if user is already logged in
     const storedUser = localStorage.getItem('currentUser');
     if (storedUser) {
       const user = JSON.parse(storedUser);
@@ -47,7 +46,6 @@ export class AuthService {
   }
 
   logout(): void {
-    // Remove user from local storage to log user out
     localStorage.removeItem('currentUser');
     this.currentUserSubject.next(null);
     this.currentRoleSubject.next(null);

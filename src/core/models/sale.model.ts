@@ -1,4 +1,3 @@
-// sales.model.ts
 import { ItemCategory } from './item.model';
 
 export interface Sale {

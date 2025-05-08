@@ -15,7 +15,7 @@ export const routes: Routes = [
     children:[
       {
         path: '',
-        pathMatch: 'full', // important for default route
+        pathMatch: 'full',
         loadComponent: () =>
           import('./components/default-component/default-component').then(m => m.DefaultComponent),
       },

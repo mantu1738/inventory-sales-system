@@ -29,7 +29,6 @@ export class LoginComponent implements OnInit {
     private modalService:BsModalService,
     private alertService:AlertService
   ) {
-    // Redirect to home if already logged in
     if (this.authService.currentUserValue) {
       this.router.navigate(['/dashboard']);
     }
@@ -43,7 +42,6 @@ export class LoginComponent implements OnInit {
       password: ['', Validators.required]
     });
 
-    // Get return url from route parameters or default to '/'
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/dashboard';
   }
 

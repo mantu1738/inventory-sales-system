@@ -68,7 +68,7 @@ export class AddEditItemForm{
           label: 'item Price',
           maxLength: null,
           minLength: null,
-          regex: '', // Fix: Use the string representation of the regular expression pattern
+          regex: '',
           inputtype: 'NUMERIC',
           required: 'Y',
           placeHolder: 'Enter Item Price',
@@ -80,44 +80,19 @@ export class AddEditItemForm{
           label: 'Item Stock Quantity',
           maxLength: null,
           minLength: null,
-          regex: '', // Fix: Use the string representation of the regular expression pattern
+          regex: '',
           inputtype: 'NUMERIC',
           required: 'Y',
           placeHolder: 'Enter Item Stock Quantity',
           paramOrder: 'itemStockQuantity',
           visible: true,
       },
-
-  //     {
-  //       idName: 'dateAdded',
-  //       label: 'Created Date',
-  //       maxLength: null,
-  //       minLength: null,
-  //       regex:'', // Fix: Use the string representation of the regular expression pattern
-  //       inputtype: 'DATE',
-  //       required: 'Y',
-  //       placeHolder: 'Enter Created Date',
-  //       paramOrder: 'itemDateAdded',
-  //       visible: true,
-  //   },
-  //   {
-  //     idName: 'lastUpdated',
-  //     label: 'Updated Date',
-  //     maxLength: null,
-  //     minLength: null,
-  //     regex:'', // Fix: Use the string representation of the regular expression pattern
-  //     inputtype: 'DATE',
-  //     required: 'Y',
-  //     placeHolder: 'Enter Update Date',
-  //     paramOrder: 'itemLastUpdated',
-  //     visible: true,
-  // },
   {
     idName: 'reorderLevel',
     label: 'Reorder Level',
     maxLength: null,
     minLength: null,
-    regex:'', // Fix: Use the string representation of the regular expression pattern
+    regex:'',
     inputtype: 'NUMERIC',
     required: 'Y',
     placeHolder: 'Enter Reorder Level',

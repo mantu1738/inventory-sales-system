@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, of, throwError } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { delay, map } from 'rxjs/operators';
 import { Item, ItemCategory } from '../models/item.model';
 import { v4 as uuidv4 } from 'uuid';
@@ -71,7 +71,7 @@ export class ItemService {
 
   constructor(private storageService: StorageService) {
 
-    // Initialize with default items if none exist
+    // For Testing Purposes
     this.getItems().subscribe(items => {
       if (items.length === 0) {
         this.storageService.saveData(this.STORAGE_KEY, this.items);
@@ -83,7 +83,6 @@ export class ItemService {
    }
 
   getItems(): Observable<Item[]> {
-    // return of(this.items).pipe(delay(800));
      return this.storageService.getData<Item>(this.STORAGE_KEY);
   }
 
@@ -105,20 +104,6 @@ export class ItemService {
   }
 
   updateItem(id: string, item: Partial<Item>): Observable<Item> {
-    // const index = this.items.findIndex(i => i.id === id);
-    // if (index === -1) {
-    //   return throwError(() => new Error('Item not found'));
-    // }
-
-    // const updatedItem: Item = {
-    //   ...this.items[index],
-    //   ...item,
-    //   lastUpdated: new Date()
-    // };
-
-    // this.items[index] = updatedItem;
-    // this.storageService.saveData(this.STORAGE_KEY, this.items);
-    // return of(updatedItem).pipe(delay(800));
     return this.getItemById(id).pipe(
           map(existingItem => {
             if (!existingItem) {
