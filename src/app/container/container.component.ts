@@ -3,6 +3,8 @@ import { Router, RouterModule } from "@angular/router";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { AuthService } from "../../core/services/auth.service";
+import { Observable, of } from "rxjs";
+import { SpinnerLoaderComponent } from "../components/spinner-loader/spinner-loader.component";
 
 @Component({
   selector: "app-container",
@@ -13,36 +15,42 @@ import { AuthService } from "../../core/services/auth.service";
 })
 
 export class ContainerComponent {
-  constructor(private authService:AuthService,private route:Router) {}
   openSidebar: boolean = true;
 
   menuSidebar = [
     {
     "icon": "fa-home",
     "name": "Home",
-    "url": "/dashboard"
+    "url": "/dashboard",
+    "permission": 'dashboard.view'
   },
   {
     "icon": "fa-area-chart",
     "name": "Items",
-    "url": "/items"
+    "url": "/items",
+    "permission": 'item.manage'
   },
   {
     "icon": "fa-users",
     "name": "Users",
-    "url": "/users"
+    "url": "/users",
+    "permission": 'user.manage'
   },
   {
     "icon": "fa-briefcase",
     "name": "Roles",
-    "url": "/roles"
+    "url": "/roles",
+    "permission": 'role.manage'
   },
   {
     "icon": "fa-cart-shopping",
     "name": "Sales",
-    "url": "/sales"
+    "url": "/sales",
+    "permission": 'sales.manage'
   }
   ]
+
+  constructor(private authService:AuthService,private route:Router) {}
 
   showSubmenu(itemEl: HTMLElement) {
     itemEl.classList.toggle("showMenu");
@@ -52,6 +60,10 @@ export class ContainerComponent {
   {
     this.authService.logout();
     this.route.navigate(['/login']);
+  }
+
+  hasPermission(permission: string): Observable<boolean> {
+    return this.authService.hasPermission(permission);
   }
 
 }

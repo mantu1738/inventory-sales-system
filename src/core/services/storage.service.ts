@@ -27,6 +27,13 @@ export class StorageService {
     );
   }
 
+  getItemByType<T>(key: string, type: string): Observable<T | null> {
+    const data = localStorage.getItem(key);
+    const items: T[] = data ? JSON.parse(data) : [];
+    const item = items.find((item: any) => item.type === type) || null;
+    return of(item);
+  }
+
   saveData<T>(key: string, data: T[]): Observable<T[]> {
     localStorage.setItem(key, JSON.stringify(data));
     return of(data).pipe(

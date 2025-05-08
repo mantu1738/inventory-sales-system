@@ -53,8 +53,8 @@ export class AuthService {
     this.currentRoleSubject.next(null);
   }
 
-  private loadUserRole(roleId: string): void {
-    this.roleService.getRoleById(roleId).subscribe(role => {
+  loadUserRole(roleId: string): void {
+    this.roleService.getRoleByType(roleId).subscribe(role => {
       if (role) {
         this.currentRoleSubject.next(role);
       }

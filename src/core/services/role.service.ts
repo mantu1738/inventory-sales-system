@@ -61,6 +61,10 @@ export class RoleService {
     return this.storageService.getItemById<Role>(this.STORAGE_KEY, id);
   }
 
+  getRoleByType(type: string): Observable<Role | null> {
+    return this.storageService.getItemByType<Role>(this.STORAGE_KEY, type);
+  }
+
   createRole(role: Role): Observable<Role> {
     return this.getRoles().pipe(
       map(roles => {

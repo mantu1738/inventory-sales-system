@@ -1,0 +1,47 @@
+
+.error-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+  height: 60vh;
+}
+
+.eye {
+  width: 80px;
+  height: 80px;
+  background-color: #ef9a11;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+}
+
+.eye__pupil {
+  width: 30px;
+  height: 30px;
+  background-color: #000;
+  border-radius: 50%;
+  animation: movePupil 2s infinite ease-in-out;
+  transform-origin: center;
+}
+
+.eye__pupil--right {
+  animation-direction: reverse;
+}
+
+@keyframes movePupil {
+  0%, 100% {
+    transform: translate(0, 0);
+  }
+  25% {
+    transform: translate(-10px, -10px);
+  }
+  50% {
+    transform: translate(10px, 10px);
+  }
+  75% {
+    transform: translate(-10px, 10px);
+  }
+}
+
+

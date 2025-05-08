@@ -45,9 +45,15 @@ export class LoginComponent implements OnInit {
   onSubmit(){
     this.loading = true;
     this.authService.login(this.formControls['username'].value, this.formControls['password'].value).subscribe({
-      next: () => {
+      next: (response) => {
+        console.log(response)
         this.loading = false;
-        this.router.navigate([this.returnUrl]);
+        if(response.roleId === 'salesperson'){
+          this.router.navigate(['/sales']);
+        }
+        else{
+          this.router.navigate(['/dashboard']);
+        }
       }
       , error: (error) => {
         this.loading = false;

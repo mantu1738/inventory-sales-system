@@ -27,12 +27,14 @@ export class AuthGuard implements CanActivate {
         }
 
         // Check if route has required permissions
-        const requiredPermission = route.data['permission'];
-        console.log(route);
+        const requiredPermission = route.data['permissions'];
+        this.authService.loadUserRole(user.roleId);
         if (requiredPermission) {
-          const hasPermission = this.authService.currentRoleValue?.permissions.includes(requiredPermission);
+          const userPermissions = this.authService.currentRoleValue?.permissions || [];
+          const requiredPermissionsArray = Array.isArray(requiredPermission) ? requiredPermission : [requiredPermission];
+          const hasPermission = requiredPermissionsArray.some(p => userPermissions.includes(p));
           if (!hasPermission) {
-            this.router.navigate(['/unauthorized']);
+            this.router.navigate(['**']);
             return false;
           }
         }
