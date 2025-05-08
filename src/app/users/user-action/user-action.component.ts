@@ -82,7 +82,6 @@ export class UserActionComponent {
 
     if(this.isEditMode && this.user){
       this.userService.updateUser(this.user.id,payload).subscribe((data:User)=>{
-        console.log("User updated successfully",data);
         this.userForm.reset();
         this.modalService.hide();
         this.isLoading=false;
@@ -92,7 +91,6 @@ export class UserActionComponent {
     }
 
     this.userService.createUser(payload).subscribe((data:User)=>{
-      console.log("User created successfully",data);
       this.userForm.reset();
       this.modalService.hide();
       this.isLoading=false;

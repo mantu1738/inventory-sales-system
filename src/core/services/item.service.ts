@@ -131,8 +131,6 @@ export class ItemService {
               updatedAt: new Date()
             };
 
-            console.log('Updated Item', updatedItem);
-
             this.storageService.updateItem(this.STORAGE_KEY, id, updatedItem);
             return updatedItem;
           })

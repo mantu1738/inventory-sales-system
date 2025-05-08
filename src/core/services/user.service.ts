@@ -4,6 +4,7 @@ import { User } from '../models/user.model';
 import { StorageService } from './storage.service';
 import { v4 as uuidv4 } from 'uuid';
 import { RoleType } from '../models/role.model';
+import { AlertService } from '../../app/components/alert/alert.service';
 
 @Injectable({
   providedIn: 'root'
@@ -54,10 +55,9 @@ export class UserService {
     }
   ]
 
-  constructor(private storageService: StorageService) {
+  constructor(private storageService: StorageService,private alertService:AlertService) {
     // Initialize with default admin user if none exists
     this.getUsers().subscribe(users => {
-      console.log(users);
       if (users.length === 0) {
        this.storageService.saveData(this.STORAGE_KEY, this.users);
       }
@@ -120,12 +120,13 @@ export class UserService {
         if (userToDelete.roleId === RoleType.ADMIN) {
           const adminCount = users.filter(u => u.roleId === RoleType.ADMIN).length;
           if (adminCount <= 1) {
-            console.log('Cannot delete the last admin user.');
+            this.alertService.showError('Cannot delete the last admin user.');
             return false;
           }
         }
         const updatedUsers = users.filter(user => user.id !== id);
         this.storageService.saveData(this.STORAGE_KEY, updatedUsers);
+        this.alertService.showWarning("User deleted successfully.");
         return true;
       })
     );

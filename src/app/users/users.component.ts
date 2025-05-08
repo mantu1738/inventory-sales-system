@@ -61,7 +61,6 @@ export class UsersComponent {
   onDeleteUser(id: string) {
     this.userService.deleteUser(id).subscribe(() => {
       this.getUsers();
-      this.alertService.showWarning("User deleted successfully.");
     });
   }
 }

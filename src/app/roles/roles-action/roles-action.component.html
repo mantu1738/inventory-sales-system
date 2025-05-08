@@ -14,9 +14,7 @@
 
       <div class="mb-3 col-md-6">
         <label class="form-label">Type</label>
-        <select class="form-select" [(ngModel)]="roleForm.type" name="type" required>
-          <option *ngFor="let type of RoleType" [value]="type.value">{{ type.label }}</option>
-        </select>
+        <input class="form-control" [(ngModel)]="roleForm.type" name="type" required />
       </div>
 
       <div class="mb-3 col-md-12">

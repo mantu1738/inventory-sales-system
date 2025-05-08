@@ -1,11 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Role, RoleDropDown } from '../../../core/models/role.model';
+import { Role } from '../../../core/models/role.model';
 import { RoleService } from '../../../core/services/role.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { SpinnerLoaderComponent } from '../../components/spinner-loader/spinner-loader.component';
-import { SalesComponent } from "../../sales/sales.component";
 import { AlertService } from '../../components/alert/alert.service';
 
 @Component({
@@ -16,7 +15,6 @@ import { AlertService } from '../../components/alert/alert.service';
 export class RoleActionComponent implements OnInit {
   @Input() role: Role | null = null;
   @Input() isEditMode: boolean = false;
-  RoleType = RoleDropDown;
   isLoading:boolean=false;
   roleForm:any = {
     name: '',
@@ -34,7 +32,6 @@ export class RoleActionComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    console.log(this.role);
     this.roleForm = this.role ? { ...this.role } : { name: '', type: 'admin', permissions: [] };
   }
 

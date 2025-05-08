@@ -56,7 +56,6 @@ export class ItemsComponent {
   }
 
   onDelete(item: Item) {
-    console.log("Delete item:", item);
     this.itemService.deleteItem(item.id).subscribe(() => {
       this.alertService.showWarning("Item deleted successfully");
       this.getItems();

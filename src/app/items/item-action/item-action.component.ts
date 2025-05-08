@@ -48,8 +48,6 @@ export class ItemActionComponent {
         itemStockQuantity: this.item.stockQuantity,
         itemReorderLevel: this.item.reorderLevel,
       });
-
-      console.log(this.itemForm.value);
     }
   }
 
