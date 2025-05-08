@@ -50,22 +50,19 @@ export class UserActionComponent {
           this.addEditUserFormFields = this.addEditUserForm.getAddEditUserForm(this.roleOptions);
 
           this.formBuilder.updateForm(this.addEditUserFormFields, this.userForm);
+          if(this.isEditMode && this.user){
+            console.log(this.user);
+            this.userForm.patchValue({
+              id: this.user.id,
+              username: this.user.username,
+              password: this.user.password,
+              fullName: this.user.fullName,
+              email: this.user.email,
+              roleId: this.user.roleId,
+            });
+          }
           this.isLoading = false;
       });
-
-  }
-  ngOnInit() {
-
-    if(this.isEditMode && this.user){
-      this.userForm.patchValue({
-        id: this.user.id,
-        username: this.user.username,
-        password: this.user.password,
-        fullName: this.user.fullName,
-        email: this.user.email,
-        roleId: this.user.roleId,
-      });
-    }
 
   }
 
