@@ -1,11 +1,10 @@
 <app-spinner [isSpinnerLoading]="isLoading">
-<div class="table-responsive mt-2 p-4">
-  <div class="d-flex justify-content-end align-items-center  gap-2">
-    <button class="btn btn-primary" (click)="onAdd()">
-      <i class="fas fa-plus"></i> Add Item
-    </button>
-
-</div>
+  <div class="container py-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h3 class="mb-0 text-dark">Item Management</h3>
+    <button class="btn btn-primary" (click)="onAdd()"><i class="fas fa-plus"></i> Add Item</button>
+  </div>
+<div class="table-responsive mt-2">
   <table
       class="table table-hover datatable dt-responsive nowrap align-middle"
       style="border-collapse: collapse; border-spacing: 0; width: 100%">
@@ -59,5 +58,6 @@
           </tr>
       </tbody>
   </table>
+</div>
 </div>
 </app-spinner>

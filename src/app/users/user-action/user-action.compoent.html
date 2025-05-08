@@ -3,7 +3,7 @@
     <div class="card-header bg-primary text-white">
       <h4 class="mb-0">{{ isEditMode ? 'Edit User' : 'Add User' }}</h4>
     </div>
-
+<app-spinner [isSpinnerLoading]="isLoading">
     <div class="card-body">
       <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
         <div class="flex flex-column h-12rem">
@@ -26,6 +26,7 @@
               </div>
       </form>
     </div>
+  </app-spinner>
   </div>
 </div>
 

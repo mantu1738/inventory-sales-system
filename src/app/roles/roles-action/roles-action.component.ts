@@ -1,53 +1,71 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Role, RoleDropDown } from '../../../core/models/role.model';
 import { RoleService } from '../../../core/services/role.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { BsModalService } from 'ngx-bootstrap/modal';
+import { SpinnerLoaderComponent } from '../../components/spinner-loader/spinner-loader.component';
+import { SalesComponent } from "../../sales/sales.component";
 
 @Component({
   selector: 'app-role-action',
   templateUrl: './roles-action.component.html',
-  imports: [FormsModule,CommonModule],
+  imports: [FormsModule, CommonModule, SpinnerLoaderComponent],
 })
 export class RoleActionComponent implements OnInit {
-  role: Partial<Role> = {};
-  permissionsInput = '';
-  isEditMode = false;
-  roleTypes = RoleDropDown;
-  selectedPermissions = new Set<string>();
-  readonly availablePermissions = [
-    'user.manage',
-    'role.manage',
-    'item.manage',
-    'sales.manage',
-    'dashboard.view'
+  @Input() role: Role | null = null;
+  @Input() isEditMode: boolean = false;
+  RoleType = RoleDropDown;
+  isLoading:boolean=false;
+  roleForm:any = {
+    name: '',
+    type: 'admin',
+    permissions: []
+  };
+
+  permissionsList = [
+    'user.manage', 'role.manage', 'item.manage', 'sales.manage', 'dashboard.view'
   ];
 
-
-  constructor(
-    private roleService: RoleService,
+  constructor(private roleService: RoleService,
     private modalService:BsModalService
   ) {}
 
   ngOnInit(): void {
-
+    console.log(this.role);
+    this.roleForm = this.role ? { ...this.role } : { name: '', type: 'admin', permissions: [] };
   }
 
-  togglePermission(permission: string) {
-    if (this.selectedPermissions.has(permission)) {
-      this.selectedPermissions.delete(permission);
+
+
+  togglePermission(perm: string) {
+    if (!this.roleForm.permissions) return;
+    const index = this.roleForm.permissions.indexOf(perm);
+    index > -1 ? this.roleForm.permissions.splice(index, 1) : this.roleForm.permissions.push(perm);
+  }
+
+  saveRole() {
+    if (this.roleForm.permissions.length === 0) {
+      alert('Please select at least one permission.');
+      return;
+    }
+    this.isLoading=true;
+    if (this.role?.id) {
+      this.roleService.updateRole(this.role.id, this.roleForm).subscribe(() => {
+        // ToDo: Alert user about success
+        this.modalService.hide();
+        this.isLoading=false;
+      });
     } else {
-      this.selectedPermissions.add(permission);
+      this.roleService.createRole(this.roleForm as Role).subscribe(() => {
+        this.modalService.hide();
+        this.isLoading=false;
+      });
     }
+    this.roleForm = { name: '', type: 'admin', permissions: [] };
   }
 
-  onSubmit() {
-    const payload = {
-      ...this.role,
-      permissions: Array.from(this.selectedPermissions),
-    }
-
-
+  isChecked(perm: string): boolean {
+    return this.roleForm.permissions?.includes(perm) ?? false;
   }
 }

@@ -1,40 +1,41 @@
-<div class="container mt-4">
-  <h4>{{ isEditMode ? 'Edit' : 'Create' }} Role</h4>
-  <form (ngSubmit)="onSubmit()" #roleForm="ngForm">
-    <div class="mb-3">
-      <label class="form-label">Role Name</label>
-      <input type="text" class="form-control" [(ngModel)]="role.name" name="name" required />
-    </div>
-
-    <div class="mb-3">
-      <label class="form-label">Role Type</label>
-      <select class="form-select" [(ngModel)]="role.type" name="type" required>
-        <option *ngFor="let r of roleTypes" [value]="r.value">{{ r.label }}</option>
-      </select>
-    </div>
-
-    <div class="mb-3">
-      <label class="form-label">Permissions</label>
+<div class="container py-4">
+<div class="card mb-4">
+  <div class="card-header bg-primary text-white">
+    <h4 class="mb-0">{{ isEditMode ? 'Edit Role' : 'Create Role' }}</h4>
+  </div>
+  <app-spinner [isSpinnerLoading]="isLoading">
+  <div class="card-body">
+    <form (ngSubmit)="saveRole()">
       <div class="row">
-        <div class="col-md-6" *ngFor="let perm of availablePermissions">
-          <div class="form-check">
-            <input
-              class="form-check-input"
-              type="checkbox"
-              [id]="perm"
-              [checked]="selectedPermissions.has(perm)"
-              (change)="togglePermission(perm)"
-            />
-            <label class="form-check-label" [for]="perm">
-              {{ perm }}
-            </label>
-          </div>
+      <div class="mb-3 col-md-6">
+        <label class="form-label">Name</label>
+        <input class="form-control" [(ngModel)]="roleForm.name" name="name" required />
+      </div>
+
+      <div class="mb-3 col-md-6">
+        <label class="form-label">Type</label>
+        <select class="form-select" [(ngModel)]="roleForm.type" name="type" required>
+          <option *ngFor="let type of RoleType" [value]="type.value">{{ type.label }}</option>
+        </select>
+      </div>
+
+      <div class="mb-3 col-md-12">
+        <label class="form-label">Permissions</label><br />
+        <div class="form-check form-check-inline" *ngFor="let perm of permissionsList">
+          <input class="form-check-input" type="checkbox" [checked]="isChecked(perm)"
+            (change)="togglePermission(perm)" />
+          <label class="form-check-label">{{ perm }}</label>
         </div>
       </div>
-    </div>
 
-
-    <button type="submit" class="btn btn-success">{{ isEditMode ? 'Update' : 'Create' }}</button>
-    <button type="button" class="btn btn-secondary ms-2" routerLink="/roles">Cancel</button>
-  </form>
+      <div class="d-flex justify-content-end pt-3">
+        <button type="submit" class="btn btn-primary">
+          {{ isEditMode ? 'Update' : 'Add' }}
+        </button>
+      </div>
+      </div>
+    </form>
+  </div>
+</app-spinner>
+</div>
 </div>

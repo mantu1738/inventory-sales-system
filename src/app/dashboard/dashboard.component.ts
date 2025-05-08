@@ -22,8 +22,6 @@ export class DashboardComponent {
   totalItemSold: number = 0;
   totalItems: number = 0;
   mostPopularItem:Item[]=[];
-  monthlySales: number[] = [];
-  monthlyLabels: string[] = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   todayStr = new Date().toISOString().split('T')[0];
   isSpinnerLoading = true;
   inventoryItems: Item[] = [];
@@ -36,8 +34,6 @@ export class DashboardComponent {
 
   ngOnInit(): void {
     this.currentUser = this.authService.currentUserValue;
-
-    // In a real application, these would come from actual services
     this.loadDashboardData();
   }
 
@@ -61,15 +57,8 @@ export class DashboardComponent {
 
         this.mostPopularItem = itemsWithHighestReorderLevel;
         this.inventoryItems = items;
-        console.log(this.inventoryItems)
+        this.isSpinnerLoading = false;
       });
-
-      setTimeout(() => {
-        this.isSpinnerLoading = false; // Hide spinner after data is loaded
-      }, 1000); // Simulate loading delay
     })
-
-    // Generate random sales data for the chart
-    this.monthlySales = Array.from({ length: 12 }, () => Math.floor(Math.random() * 5000) + 1000);
   }
 }

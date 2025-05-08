@@ -4,6 +4,8 @@ import {  FormBuilder, FormGroup, ReactiveFormsModule, Validators } from "@angul
 import { ActivatedRoute, Router } from "@angular/router";
 import { AuthService } from "../../core/services/auth.service";
 import { SpinnerLoaderComponent } from "../components/spinner-loader/spinner-loader.component";
+import { BsModalService } from "ngx-bootstrap/modal";
+import { DeafultCredComponent } from "../components/default-cred/default-cred.component";
 
 @Component({
   selector: "app-login",
@@ -22,7 +24,8 @@ export class LoginComponent implements OnInit {
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private modalService:BsModalService
   ) {
     // Redirect to home if already logged in
     if (this.authService.currentUserValue) {
@@ -60,6 +63,12 @@ export class LoginComponent implements OnInit {
         this.error = error.message;
       }
     });
+  }
+
+  showCredentials(){
+    this.modalService.show(DeafultCredComponent,{
+      class: 'modal-dialog-centered',
+    })
   }
 
 }

@@ -7,12 +7,14 @@ import { User } from "../../../core/models/user.model";
 import { AddEditUserForm } from "../../../core/forms/user.form";
 import { BsModalService } from "ngx-bootstrap/modal";
 import { UserService } from "../../../core/services/user.service";
+import { RoleService } from "../../../core/services/role.service";
+import { SpinnerLoaderComponent } from "../../components/spinner-loader/spinner-loader.component";
 
 
 @Component({
   selector: "app-user-action",
   templateUrl: "./user-action.compoent.html",
-  imports:[CommonModule,ReactiveFormsModule,FormBuilderComponent],
+  imports: [CommonModule, ReactiveFormsModule, FormBuilderComponent, SpinnerLoaderComponent],
   providers:[FormBuilderService]
 })
 
@@ -22,17 +24,32 @@ export class UserActionComponent {
   addEditUserFormFields!:FormFieldProperties[];
   @Input() isEditMode: boolean = false;
   @Input() user?:User;
+  roleOptions: { label: string; value: string }[] = [];
+  isLoading: boolean = false;
+
 
 
   constructor(private formBuilder:FormBuilderService,
     private fb:FormBuilder,
      private addEditUserForm:AddEditUserForm,
      private modalService:BsModalService,
-     private userService:UserService
-    ) {
-    this.addEditUserFormFields = this.addEditUserForm.getAddEditUserForm();
-    this.userForm = this.fb.group({});
-    this.formBuilder.updateForm(this.addEditUserFormFields, this.userForm);
+     private userService:UserService,
+     private roleService:RoleService) {
+      this.userForm = this.fb.group({});
+    this.isLoading = true;
+      this.roleService.getRoles().subscribe((roles) => {
+        this.roleOptions = roles
+          .filter(role => role.name !== 'Super Admin')
+          .map(role => ({
+            label: role.name,
+            value: role.type
+          }));
+          this.addEditUserFormFields = this.addEditUserForm.getAddEditUserForm(this.roleOptions);
+
+          this.formBuilder.updateForm(this.addEditUserFormFields, this.userForm);
+          this.isLoading = false;
+      });
+
   }
   ngOnInit() {
 
@@ -54,6 +71,7 @@ export class UserActionComponent {
       this.userForm.markAllAsTouched();
       return;
     }
+    this.isLoading=true;
 
     const payload:User = {
       ...this.userForm.value
@@ -63,7 +81,8 @@ export class UserActionComponent {
       this.userService.updateUser(this.user.id,payload).subscribe((data:User)=>{
         console.log("User updated successfully",data);
         this.userForm.reset();
-        this.modalService.hide(); // Hide the modal after successful submission
+        this.modalService.hide();
+        this.isLoading=false;
       });
       return;
     }
@@ -71,7 +90,8 @@ export class UserActionComponent {
     this.userService.createUser(payload).subscribe((data:User)=>{
       console.log("User created successfully",data);
       this.userForm.reset();
-      this.modalService.hide(); // Hide the modal after successful submission
+      this.modalService.hide();
+      this.isLoading=false;
     });
   }
 }

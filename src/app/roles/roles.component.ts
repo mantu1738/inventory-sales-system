@@ -4,15 +4,17 @@ import { Role } from "../../core/models/role.model";
 import { CommonModule } from "@angular/common";
 import { BsModalService } from "ngx-bootstrap/modal";
 import { RoleActionComponent } from "./roles-action/roles-action.component";
+import { SpinnerLoaderComponent } from "../components/spinner-loader/spinner-loader.component";
 
 @Component({
   selector: "app-roles",
   templateUrl: "./roles.component.html",
-  imports:[CommonModule]
+  imports:[CommonModule,SpinnerLoaderComponent]
 })
 
 export class RolesComponent {
   roles: Role[] = [];
+  isLoading: boolean = false;
 
   constructor(private roleService: RoleService,private modalService:BsModalService) {}
 
@@ -21,7 +23,11 @@ export class RolesComponent {
   }
 
   loadRoles() {
-    this.roleService.getRoles().subscribe(roles => this.roles = roles);
+    this.isLoading = true;
+    this.roleService.getRoles().subscribe((roles) => {
+      this.roles = roles;
+      this.isLoading = false;
+    });
   }
 
   addRole() {
@@ -33,7 +39,16 @@ export class RolesComponent {
   }
 
   editRole(role: Role) {
-    console.log(role);
+    const initialState = {
+      role: role,
+      isEditMode: true,
+    };
+    this.modalService.show(RoleActionComponent, {
+      class: 'modal-dialog modal-lg modal-dialog-centered',
+      initialState: initialState,
+    }).onHidden?.subscribe(() => {
+      this.loadRoles();
+    });
   }
 
   deleteRole(id: string) {

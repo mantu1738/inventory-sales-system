@@ -6,13 +6,14 @@ import { FormBuilderService } from "../../components/form-builder/form-builder.s
 import { AddEditItemForm } from "../../../core/forms/add-item.form";
 import { Item } from "../../../core/models/item.model";
 import { ItemService } from "../../../core/services/item.service";
-import { BsModalRef, BsModalService } from "ngx-bootstrap/modal";
+import {  BsModalService } from "ngx-bootstrap/modal";
 import { AlertService } from "../../components/alert/alert.service";
+import { SpinnerLoaderComponent } from "../../components/spinner-loader/spinner-loader.component";
 
 @Component({
   selector: "app-item-action",
   templateUrl: "./item-action.component.html",
-  imports:[CommonModule,ReactiveFormsModule,FormBuilderComponent],
+  imports:[CommonModule,ReactiveFormsModule,FormBuilderComponent,SpinnerLoaderComponent],
   providers:[FormBuilderService]
 })
 
@@ -21,7 +22,7 @@ export class ItemActionComponent {
   addEditItemFormFields!:FormFieldProperties[];
   @Input() isEditMode: boolean = false;
   @Input() item?:Item;
-  modelRef!:BsModalRef;
+  isLoading: boolean = false;
 
   constructor(private addItemForm:AddEditItemForm,
      private formBuilder:FormBuilderService,
@@ -57,6 +58,8 @@ export class ItemActionComponent {
       return;
     }
 
+    this.isLoading = true;
+
     const payload:Item = {
         id: this.itemForm.get('itemId')?.value,
         name: this.itemForm.get('itemName')?.value,
@@ -72,14 +75,16 @@ export class ItemActionComponent {
     if(this.isEditMode && this.item){
       this.itemService.updateItem(this.item.id, payload).subscribe(() => {
         this.alertService.show('Item Updated Sucessfully', 'success');
-        this.modalService.hide()
+        this.modalService.hide();
+        this.isLoading=false;
       });
       return;
     }
 
     this.itemService.createItem(payload).subscribe(() => {
       this.alertService.show('Item Added Sucessfully', 'success');
-      this.modalService.hide()
+      this.modalService.hide();
+      this.isLoading=false;
     });
 
   }

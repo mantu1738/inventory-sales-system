@@ -48,22 +48,12 @@
 
       <div *ngIf="error" class="alert alert-danger mt-3" >{{error}}</div>
 
-      <div class="login-info" >
-        <p class="highlight">Default credentials: Admin</p>
-        <p>Username: admin</p>
-        <p>Password: admin123</p>
-
-        <p class="highlight">Default credentials: Supervisor</p>
-        <p>Username: </p>
-        <p>Password: </p>
-
-        <p class="highlight">Default credentials: Sales Person</p>
-        <p>Username: admin</p>
-        <p>Password: admin123</p>
-
-        <p class="highlight">For demo purposes, you can use the above credentials to log in.</p>
-      </div>
     </form>
+    <div class="text-center my-3">
+      <button class="btn btn-info" (click)="showCredentials()">
+        Default Credentials
+      </button>
+    </div>
   </div>
   <div class="login-footer">
     <p>&copy; 2025 Inventory Management System. Mantosh Sah.</p>

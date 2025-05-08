@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { FormFieldProperties } from '../../app/components/form-builder/form-builder.component';
 import { v4 as uuidv4 } from 'uuid';
 import { RoleDropDown } from '../models/role.model';
+import { RoleService } from '../services/role.service';
 
 @Injectable({
   providedIn: 'root',
@@ -10,7 +11,13 @@ import { RoleDropDown } from '../models/role.model';
 
 export class AddEditUserForm{
 
-  getAddEditUserForm():FormFieldProperties[]{
+
+constructor(private roleService: RoleService) {
+
+}
+
+
+  getAddEditUserForm(roleOptions:any):FormFieldProperties[]{
     return [
       {
           idName: 'id',
@@ -84,7 +91,7 @@ export class AddEditUserForm{
       placeHolder: 'Select User Role',
       paramOrder:'roleId',
       visible:true,
-      options:RoleDropDown
+      options:roleOptions,
     }
     ];
   }
