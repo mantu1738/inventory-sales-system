@@ -5,6 +5,7 @@ import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { RouterModule } from "@angular/router";
 import { SpinnerLoaderComponent } from "../components/spinner-loader/spinner-loader.component";
+import { AlertService } from "../components/alert/alert.service";
 
 @Component({
   selector: "app-sales",
@@ -22,7 +23,7 @@ export class SalesComponent {
   isLoading = false;
 
 
-  constructor(private salesService: SalesService) {}
+  constructor(private salesService: SalesService,private alertService:AlertService) {}
 
   ngOnInit(): void {
     this.loadItems();
@@ -40,8 +41,13 @@ export class SalesComponent {
     const quantity = this.sellAmount[id] || 1;
     this.isSelling[id] = true;
     this.salesService.sellItem(id, quantity).subscribe({
-      next: () => this.loadItems(),
-      error: (err) => alert(err.message),
+      next: () => {
+        this.loadItems();
+        this.alertService.showSuccess("Item sold successfully.");
+      },
+      error: (err) => {
+        this.alertService.showError("Failed to sell item. Please try again.");
+      },
       complete: () => (this.isSelling[id] = false),
     });
   }
@@ -50,7 +56,10 @@ export class SalesComponent {
     const quantity = this.restockAmount[id] || 1;
     this.isRestocking[id] = true;
     this.salesService.restockItem(id, quantity).subscribe({
-      next: () => this.loadItems(),
+      next: () => {
+        this.loadItems();
+        this.alertService.showSuccess("Item restocked successfully.");
+      },
       complete: () => (this.isRestocking[id] = false),
     });
   }

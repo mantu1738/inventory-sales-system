@@ -9,6 +9,7 @@ import { BsModalService } from "ngx-bootstrap/modal";
 import { UserService } from "../../../core/services/user.service";
 import { RoleService } from "../../../core/services/role.service";
 import { SpinnerLoaderComponent } from "../../components/spinner-loader/spinner-loader.component";
+import { AlertService } from "../../components/alert/alert.service";
 
 
 @Component({
@@ -34,7 +35,9 @@ export class UserActionComponent {
      private addEditUserForm:AddEditUserForm,
      private modalService:BsModalService,
      private userService:UserService,
-     private roleService:RoleService) {
+     private roleService:RoleService,
+     private alertService:AlertService
+    ) {
       this.userForm = this.fb.group({});
     this.isLoading = true;
       this.roleService.getRoles().subscribe((roles) => {
@@ -83,6 +86,7 @@ export class UserActionComponent {
         this.userForm.reset();
         this.modalService.hide();
         this.isLoading=false;
+        this.alertService.showSuccess("User updated successfully.");
       });
       return;
     }
@@ -92,6 +96,7 @@ export class UserActionComponent {
       this.userForm.reset();
       this.modalService.hide();
       this.isLoading=false;
+      this.alertService.showSuccess("User created successfully.");
     });
   }
 }

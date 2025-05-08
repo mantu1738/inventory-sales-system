@@ -5,6 +5,7 @@ import { CommonModule } from "@angular/common";
 import { BsModalService } from "ngx-bootstrap/modal";
 import { ItemActionComponent } from "./item-action/item-action.component";
 import { SpinnerLoaderComponent } from "../components/spinner-loader/spinner-loader.component";
+import { AlertService } from "../components/alert/alert.service";
 
 @Component({
   selector: "app-items",
@@ -17,7 +18,10 @@ export class ItemsComponent {
   items: Item[] = [];
   isLoading =true;
 
-  constructor(private itemService:ItemService,private modalService:BsModalService) {}
+  constructor(private itemService:ItemService,
+    private modalService:BsModalService,
+    private alertService:AlertService
+  ) {}
   ngOnInit() {
     this.getItems();
   }
@@ -54,7 +58,8 @@ export class ItemsComponent {
   onDelete(item: Item) {
     console.log("Delete item:", item);
     this.itemService.deleteItem(item.id).subscribe(() => {
-      this.getItems(); // Refresh the list after deletion
+      this.alertService.showWarning("Item deleted successfully");
+      this.getItems();
     });
 
   }

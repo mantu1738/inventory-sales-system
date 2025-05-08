@@ -6,6 +6,7 @@ import { AuthService } from "../../core/services/auth.service";
 import { SpinnerLoaderComponent } from "../components/spinner-loader/spinner-loader.component";
 import { BsModalService } from "ngx-bootstrap/modal";
 import { DeafultCredComponent } from "../components/default-cred/default-cred.component";
+import { AlertService } from "../components/alert/alert.service";
 
 @Component({
   selector: "app-login",
@@ -25,7 +26,8 @@ export class LoginComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private authService: AuthService,
-    private modalService:BsModalService
+    private modalService:BsModalService,
+    private alertService:AlertService
   ) {
     // Redirect to home if already logged in
     if (this.authService.currentUserValue) {
@@ -57,10 +59,12 @@ export class LoginComponent implements OnInit {
         else{
           this.router.navigate(['/dashboard']);
         }
+        this.alertService.showSuccess('Login successful!');
       }
       , error: (error) => {
         this.loading = false;
         this.error = error.message;
+        this.alertService.showError('Login failed! Please check your credentials.');
       }
     });
   }

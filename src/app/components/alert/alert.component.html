@@ -1,0 +1,15 @@
+<div class="alert-container" *ngIf="visible">
+  <div
+    [@slideInOut]="animationState"
+    class="alert d-flex align-items-center justify-content-between"
+    [ngClass]="getAlertClass()">
+    <div class="d-flex align-items-center">
+      <span *ngIf="type === 'success'" class="me-2">Success!</span>
+      <span *ngIf="type === 'error'" class="me-2">Error!</span>
+      <span *ngIf="type === 'warning'" class="me-2">Warning!</span>
+      <span *ngIf="type === 'info'" class="me-2">Info!</span>
+      {{ message }}
+    </div>
+    <button type="button" class="btn-close" (click)="closeAlert()"></button>
+  </div>
+</div>

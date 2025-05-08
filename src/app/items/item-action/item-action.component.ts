@@ -8,6 +8,7 @@ import { Item } from "../../../core/models/item.model";
 import { ItemService } from "../../../core/services/item.service";
 import {  BsModalService } from "ngx-bootstrap/modal";
 import { SpinnerLoaderComponent } from "../../components/spinner-loader/spinner-loader.component";
+import { AlertService } from "../../components/alert/alert.service";
 
 @Component({
   selector: "app-item-action",
@@ -27,7 +28,8 @@ export class ItemActionComponent {
      private formBuilder:FormBuilderService,
      private fb: FormBuilder,
      private itemService:ItemService,
-     private modalService:BsModalService
+     private modalService:BsModalService,
+     private alertService:AlertService
     )
     {
     this.addEditItemFormFields = this.addItemForm.getAddEditItemForm();
@@ -69,21 +71,19 @@ export class ItemActionComponent {
         reorderLevel: this.itemForm.get('itemReorderLevel')?.value,
     }
 
-    console.log (payload);
-
     if(this.isEditMode && this.item){
       this.itemService.updateItem(this.item.id, payload).subscribe(() => {
-        // this.alertService.show('Item Updated Sucessfully', 'success');
         this.modalService.hide();
         this.isLoading=false;
+        this.alertService.showSuccess('Item Updated Sucessfully.');
       });
       return;
     }
 
     this.itemService.createItem(payload).subscribe(() => {
-      // this.alertService.show('Item Added Sucessfully', 'success');
       this.modalService.hide();
       this.isLoading=false;
+      this.alertService.showSuccess('Item added Sucessfully.');
     });
 
   }

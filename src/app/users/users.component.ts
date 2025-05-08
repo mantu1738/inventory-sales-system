@@ -5,6 +5,7 @@ import { UserService } from "../../core/services/user.service";
 import { BsModalService } from "ngx-bootstrap/modal";
 import { UserActionComponent } from "./user-action/user-action.component";
 import { SpinnerLoaderComponent } from "../components/spinner-loader/spinner-loader.component";
+import { AlertService } from "../components/alert/alert.service";
 
 @Component({
   selector: "app-users",
@@ -21,6 +22,7 @@ export class UsersComponent {
   constructor(
     private userService:UserService,
     private modalService:BsModalService,
+    private alertService:AlertService
   ) {}
   ngOnInit() {
     this.getUsers();
@@ -58,7 +60,8 @@ export class UsersComponent {
 
   onDeleteUser(id: string) {
     this.userService.deleteUser(id).subscribe(() => {
-      this.getUsers(); // Refresh the list after deletion
+      this.getUsers();
+      this.alertService.showWarning("User deleted successfully.");
     });
   }
 }

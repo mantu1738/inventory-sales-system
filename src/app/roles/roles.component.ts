@@ -5,6 +5,7 @@ import { CommonModule } from "@angular/common";
 import { BsModalService } from "ngx-bootstrap/modal";
 import { RoleActionComponent } from "./roles-action/roles-action.component";
 import { SpinnerLoaderComponent } from "../components/spinner-loader/spinner-loader.component";
+import { AlertService } from "../components/alert/alert.service";
 
 @Component({
   selector: "app-roles",
@@ -16,7 +17,7 @@ export class RolesComponent {
   roles: Role[] = [];
   isLoading: boolean = false;
 
-  constructor(private roleService: RoleService,private modalService:BsModalService) {}
+  constructor(private roleService: RoleService,private modalService:BsModalService,private alertService:AlertService) {}
 
   ngOnInit(): void {
     this.loadRoles();
@@ -52,8 +53,10 @@ export class RolesComponent {
   }
 
   deleteRole(id: string) {
-    if (confirm('Are you sure you want to delete this role?')) {
-      this.roleService.deleteRole(id).subscribe(() => this.loadRoles());
-    }
+      this.roleService.deleteRole(id).subscribe(() => {
+        this.loadRoles();
+        this.alertService.showWarning("Role deleted successfully.");
+      });
+
   }
 }

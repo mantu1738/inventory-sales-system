@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { SpinnerLoaderComponent } from '../../components/spinner-loader/spinner-loader.component';
 import { SalesComponent } from "../../sales/sales.component";
+import { AlertService } from '../../components/alert/alert.service';
 
 @Component({
   selector: 'app-role-action',
@@ -28,7 +29,8 @@ export class RoleActionComponent implements OnInit {
   ];
 
   constructor(private roleService: RoleService,
-    private modalService:BsModalService
+    private modalService:BsModalService,
+    private alertService:AlertService
   ) {}
 
   ngOnInit(): void {
@@ -52,14 +54,15 @@ export class RoleActionComponent implements OnInit {
     this.isLoading=true;
     if (this.role?.id) {
       this.roleService.updateRole(this.role.id, this.roleForm).subscribe(() => {
-        // ToDo: Alert user about success
         this.modalService.hide();
         this.isLoading=false;
+        this.alertService.showSuccess('Role updated successfully.');
       });
     } else {
       this.roleService.createRole(this.roleForm as Role).subscribe(() => {
         this.modalService.hide();
         this.isLoading=false;
+        this.alertService.showSuccess('Role added successfully.');
       });
     }
     this.roleForm = { name: '', type: 'admin', permissions: [] };
