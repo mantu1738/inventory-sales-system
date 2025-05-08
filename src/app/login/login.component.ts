@@ -48,7 +48,7 @@ export class LoginComponent implements OnInit {
       password: ['', Validators.required]
     });
 
-    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/dashboard';
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '';
   }
 
   onSubmit(){
@@ -56,12 +56,7 @@ export class LoginComponent implements OnInit {
     this.authService.login(this.formControls['username'].value, this.formControls['password'].value).subscribe({
       next: (response) => {
         this.loading = false;
-        if(response.roleId === 'salesperson'){
-          this.router.navigate(['/sales']);
-        }
-        else{
-          this.router.navigate(['/dashboard']);
-        }
+        this.router.navigate([this.returnUrl]);
         this.alertService.showSuccess('Login successful!');
       }
       , error: (error) => {
