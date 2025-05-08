@@ -7,6 +7,9 @@ import { SpinnerLoaderComponent } from "../components/spinner-loader/spinner-loa
 import { BsModalService } from "ngx-bootstrap/modal";
 import { DeafultCredComponent } from "../components/default-cred/default-cred.component";
 import { AlertService } from "../components/alert/alert.service";
+import { ItemService } from "../../core/services/item.service";
+import { SalesService } from "../../core/services/sales.service";
+import { RoleService } from "../../core/services/role.service";
 
 @Component({
   selector: "app-login",
@@ -27,7 +30,10 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private authService: AuthService,
     private modalService:BsModalService,
-    private alertService:AlertService
+    private alertService:AlertService,
+    private itemsService:ItemService,
+    private salesService:SalesService,
+    private roleService:RoleService
   ) {
     if (this.authService.currentUserValue) {
       this.router.navigate(['/dashboard']);
