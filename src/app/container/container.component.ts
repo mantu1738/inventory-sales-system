@@ -19,8 +19,8 @@ export class ContainerComponent {
 
   menuSidebar = [
     {
-    "icon": "fa-home",
-    "name": "Home",
+    "icon": "fa-boxes",
+    "name": "Dashboard",
     "url": "/dashboard",
     "permission": 'dashboard.view'
   },

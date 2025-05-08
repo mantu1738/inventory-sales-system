@@ -3,9 +3,23 @@
 <h1>IMS</h1>
 </div>
 <ul class="nav flex-column  p-2" *ngIf="menuSidebar">
+  <li class="nav-item mt-2">
+    <a
+      class="nav-link d-flex align-items-center gap-2"
+      [routerLink]="''"
+      routerLinkActive="active"
+    >
+      <i
+        class="fa fa-home"
+        [ngClass]="'fa-sign-out-alt'"
+        aria-hidden="true"
+        title="Logout"
+      ></i>
+      <span *ngIf="openSidebar">Home</span>
+    </a>
+  </li>
   <ng-container *ngFor="let navItem of menuSidebar"  >
   <li class="nav-item mt-2"  *ngIf="hasPermission(navItem.permission) | async">
-
     <a
 
       class="nav-link d-flex align-items-center gap-2 "
