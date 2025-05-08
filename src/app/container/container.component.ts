@@ -4,13 +4,12 @@ import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { AuthService } from "../../core/services/auth.service";
 import { Observable, of } from "rxjs";
-import { SpinnerLoaderComponent } from "../components/spinner-loader/spinner-loader.component";
 
 @Component({
   selector: "app-container",
   templateUrl: "./container.component.html",
   styleUrls: ["./container.component.css"],
-  imports:[RouterModule,CommonModule,FormsModule ],
+  imports: [RouterModule, CommonModule, FormsModule],
 
 })
 

@@ -7,7 +7,6 @@ import { AddEditItemForm } from "../../../core/forms/add-item.form";
 import { Item } from "../../../core/models/item.model";
 import { ItemService } from "../../../core/services/item.service";
 import {  BsModalService } from "ngx-bootstrap/modal";
-import { AlertService } from "../../components/alert/alert.service";
 import { SpinnerLoaderComponent } from "../../components/spinner-loader/spinner-loader.component";
 
 @Component({
@@ -28,13 +27,13 @@ export class ItemActionComponent {
      private formBuilder:FormBuilderService,
      private fb: FormBuilder,
      private itemService:ItemService,
-     private alertService:AlertService,
      private modalService:BsModalService
     )
     {
     this.addEditItemFormFields = this.addItemForm.getAddEditItemForm();
     this.itemForm = this.fb.group({});
     this.formBuilder.updateForm(this.addEditItemFormFields, this.itemForm);
+
   }
   ngOnInit() {
     if(this.isEditMode && this.item){
@@ -74,7 +73,7 @@ export class ItemActionComponent {
 
     if(this.isEditMode && this.item){
       this.itemService.updateItem(this.item.id, payload).subscribe(() => {
-        this.alertService.show('Item Updated Sucessfully', 'success');
+        // this.alertService.show('Item Updated Sucessfully', 'success');
         this.modalService.hide();
         this.isLoading=false;
       });
@@ -82,7 +81,7 @@ export class ItemActionComponent {
     }
 
     this.itemService.createItem(payload).subscribe(() => {
-      this.alertService.show('Item Added Sucessfully', 'success');
+      // this.alertService.show('Item Added Sucessfully', 'success');
       this.modalService.hide();
       this.isLoading=false;
     });
