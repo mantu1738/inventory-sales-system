@@ -26,6 +26,7 @@ export class DashboardComponent {
   isSpinnerLoading = true;
   inventoryItems: Item[] = [];
   salesData:Sale[]=[];
+  totalSales: number = 0;
   constructor(
     private authService: AuthService,
     private salesService:SalesService,
@@ -40,7 +41,6 @@ export class DashboardComponent {
   private loadDashboardData(): void {
 
     this.salesService.getSales().subscribe(sales => {
-      console.log(sales);
       this.totalItemSold = sales.reduce((total, sale) => total + sale.quantity, 0);
       const today = new Date().toISOString().split('T')[0];
 
@@ -49,6 +49,7 @@ export class DashboardComponent {
         .reduce((total, sale) => total + sale.quantity, 0);
 
       this.salesData = sales.reverse();
+      this.totalSales = sales.reduce((total, sale) => total + sale.totalPrice, 0);
 
       this.itemService.getItems().subscribe(items => {
         const maxReorderLevel = Math.max(
