@@ -1,59 +1,63 @@
-# InventorySalesSystem
+# Inventory Management and Sales Dashboard System
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.9.
+This project is an **Angular-based Inventory Management and Sales Dashboard System** that enables users to manage items, roles, and users; track sales data; and handle item transactions. It is designed using the **MVC pattern** and simulates real-world API interactions using local storage with delayed observable responses.
 
-## Development server
+# Live Link
+<https://inventory-sales-system.netlify.app>
 
-To start a local development server, run:
+---
 
+## 🛠️ Technologies Used
+
+- **Angular**
+- **TypeScript**
+- **Pure CSS**
+- **Bootstrap**
+- **LocalStorage (for data persistence)**
+
+---
+
+## ✅ Features
+
+### User Management (Admin Access Only)
+- Create, Read, Update, Delete users
+
+### Role Management (Admin Access Only)
+- Create, Read, Update, Delete roles
+
+### Item Management (Admin & Supervisor Access)
+- Create, Read, Update, Delete items
+
+### Dashboard (Admin & Supervisor Access)
+- View total items sold
+- View items sold today
+- View most popular item
+- View Total Sales Amount
+
+### Sales System (Admin & Salesperson Access)
+- Sell item (if available in inventory)
+- Restock items
+- Search items by name/category
+
+---
+
+## ⚙️ API Service Specifications
+
+- **Data Source**: Local Storage
+- **API Calls**: Simulated using `RxJS` Observables with 500ms - 2500ms random delay
+- **Data Manipulation**: Handled within respective models for separation of concerns
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+- Node.js and Angular CLI installed
+
+### Setup
 ```bash
+git clone <https://github.com/mantu1738/inventory-sales-system.git>
+cd inventory-management-system
+npm install
 ng serve
-```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
