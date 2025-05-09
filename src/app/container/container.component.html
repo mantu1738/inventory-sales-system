@@ -1,6 +1,6 @@
 <div class="sidebar" [class.sidebar-close]="!openSidebar">
 <div class="logo">
-<h1>IMS</h1>
+<a [routerLink]="''" class="text-decoration-none"><h1>IMS</h1></a>
 </div>
 <ul class="nav flex-column  p-2" *ngIf="menuSidebar">
   <li class="nav-item mt-2">
@@ -8,12 +8,13 @@
       class="nav-link d-flex align-items-center gap-2"
       [routerLink]="''"
       routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
     >
       <i
         class="fa fa-home"
         [ngClass]="'fa-sign-out-alt'"
         aria-hidden="true"
-        title="Logout"
+        title="home"
       ></i>
       <span *ngIf="openSidebar">Home</span>
     </a>

@@ -63,7 +63,8 @@
 
 .logo{
   height:80px;
-  background: #585656;
+  background: #252525;
+
 }
 
 .logo h1{
@@ -91,7 +92,8 @@
   padding: 20px 10px;
   display: flex;
   align-items: center;
-  background:#dac0c0 ;
+  background:#e6e5e5 ;
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
 }
 
 .home-section .home-header .title {
@@ -114,17 +116,33 @@
   left: 0;
   height: 100%;
   width: 260px;
-  background: #c7c5c5;
+  background: #e6e5e5;
   z-index: 100;
   transition: all 0.5s ease;
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+
 }
 
 .sidebar.sidebar-close {
   width: 75px;
+
 }
 
 .nav-link{
   cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.nav-link:hover{
+  background: #995555;
+  color: #ffffff !important;
+  border-radius: 5px;
+}
+
+.nav-link.active {
+  background: #995555;
+  color: #ffffff !important;
+  border-radius: 5px;
 }
 
 .sidebar .logo-details {
