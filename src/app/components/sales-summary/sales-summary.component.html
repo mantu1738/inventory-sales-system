@@ -6,16 +6,20 @@
     <table class="inventory-table">
       <thead>
         <tr>
-          <th>Sale Id</th>
+          <!-- <th>Sale Id</th> -->
           <th>Item Name</th>
-          <th>Total Amount</th>
+          <th>Price</th>
+          <th>Quantity</th>
+          <th>Total</th>
           <th>Created</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let item of salesData">
-          <td>{{ item.id }}</td>
+          <!-- <td>{{ item.id }}</td> -->
           <td>{{ item.itemName }}</td>
+          <td>Rs. {{ item.unitPrice }}</td>
+          <td>{{item.quantity}}</td>
           <td>Rs. {{ item.totalPrice }}</td>
           <td>
               {{ item.date | date: 'dd/MM/yyyy' }} {{ item.date | date: 'h:mm a' }}

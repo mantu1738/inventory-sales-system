@@ -40,8 +40,14 @@ export class DashboardComponent {
   private loadDashboardData(): void {
 
     this.salesService.getSales().subscribe(sales => {
-      this.totalItemSold = sales.length;
-      this.totalItems = sales.reduce((total, sale) => total + sale.quantity, 0);
+      console.log(sales);
+      this.totalItemSold = sales.reduce((total, sale) => total + sale.quantity, 0);
+      const today = new Date().toISOString().split('T')[0];
+
+      this.totalItems = sales
+        .filter(sale => new Date(sale.date).toISOString().split('T')[0] === today)
+        .reduce((total, sale) => total + sale.quantity, 0);
+
       this.salesData = sales.reverse();
 
       this.itemService.getItems().subscribe(items => {
